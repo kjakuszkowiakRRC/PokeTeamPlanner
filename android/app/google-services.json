@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "137322402725",
+    "project_id": "poke-team-planner",
+    "storage_bucket": "poke-team-planner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137322402725:android:c284c7770b834bb9ae8e4c",
+        "android_client_info": {
+          "package_name": "com.example.poke_team_planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137322402725-1n2slmupbp0dfd8a819qmn83v603dk4u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfj0v0bEQHKTPpM2PWrh-uRkhuBaCQ9z8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137322402725-1n2slmupbp0dfd8a819qmn83v603dk4u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
