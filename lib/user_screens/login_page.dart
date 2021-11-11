@@ -34,9 +34,10 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => ProfilePage(
-            user: user,
-          ),
+          // builder: (context) => ProfilePage(
+          //   user: user,
+          // ),
+          builder: (context) => Menu(),
         ),
       );
     }
