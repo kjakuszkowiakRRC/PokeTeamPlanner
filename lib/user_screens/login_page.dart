@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Firebase Authentication'),
+        title: const Text('Pokemon Team Builder'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
