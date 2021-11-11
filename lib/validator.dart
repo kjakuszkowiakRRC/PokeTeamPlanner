@@ -1,9 +1,9 @@
 class Validator {
-  static String? validateName({required String name}) {
-    if (name == null) {
+  static String? validateUsername({required String? username}) {
+    if (username == null) {
       return null;
     }
-    if (name.isEmpty) {
+    if (username.isEmpty) {
       return 'Name can\'t be empty';
     }
 

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:poke_team_planner/register_page.dart';
 import 'package:poke_team_planner/validator.dart';
 
 import 'fire_auth.dart';
@@ -99,9 +100,9 @@ class LoginPage extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(builder: (context) => RegisterPage()),
-                        // );
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => RegisterPage()),
+                        );
                       },
                       child: Text(
                         'Register',
