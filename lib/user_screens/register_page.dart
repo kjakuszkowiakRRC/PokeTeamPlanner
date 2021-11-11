@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:poke_team_planner/profile_page.dart';
-import 'package:poke_team_planner/fire_auth.dart';
-import 'package:poke_team_planner/validator.dart';
+import 'package:poke_team_planner/user_screens/profile_page.dart';
+import 'package:poke_team_planner/utils/fire_auth.dart';
+import 'package:poke_team_planner/utils/validator.dart';
 
-import 'fire_auth.dart';
+import '../utils/fire_auth.dart';
 
 class RegisterPage extends StatefulWidget {
   @override

@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'fire_auth.dart';
+import '../utils/fire_auth.dart';
 import 'login_page.dart';
+
+//TODO: change styling
+//TODO: add date created?
+//TODO: test verify email
 
 class ProfilePage extends StatefulWidget {
   final User user;

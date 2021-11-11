@@ -1,20 +1,45 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:poke_team_planner/register_page.dart';
-import 'package:poke_team_planner/validator.dart';
+import 'package:poke_team_planner/user_screens/profile_page.dart';
+import 'package:poke_team_planner/user_screens/register_page.dart';
+import 'package:poke_team_planner/utils/validator.dart';
 
-import 'fire_auth.dart';
+import '../utils/fire_auth.dart';
+//Todo: add a message for failed sign in
+//Todo: change the formatting
+//Todo: add email and password as labels and not hints
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
 
-class LoginPage extends StatelessWidget {
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
-  final FocusNode _focusEmail = FocusNode();
-  final FocusNode _focusPassword = FocusNode();
+
+  final _focusEmail = FocusNode();
+  final _focusPassword = FocusNode();
+
+  bool _isProcessing = false;
 
   Future<FirebaseApp> _initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
+
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(
+            user: user,
+          ),
+        ),
+      );
+    }
+
     return firebaseApp;
   }
 
@@ -83,12 +108,12 @@ class LoginPage extends StatelessWidget {
                             email: _emailTextController.text,
                             password: _passwordTextController.text, context: context,
                           );
-                          // if (user != null) {
-                          //   Navigator.of(context)
-                          //       .pushReplacement(
-                          //     MaterialPageRoute(builder: (context) => ProfilePage(user: user)),
-                          //   );
-                          // }
+                          if (user != null) {
+                            Navigator.of(context)
+                                .pushReplacement(
+                              MaterialPageRoute(builder: (context) => ProfilePage(user: user)),
+                            );
+                          }
                         }
                       },
                       child: Text(
