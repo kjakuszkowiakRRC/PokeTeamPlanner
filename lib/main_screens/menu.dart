@@ -10,28 +10,30 @@ class Menu extends StatelessWidget {
       appBar: AppBar(
         title: Text('Poke Team Builder'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton.icon(
-                icon: Image.asset('assets/images/pokeball.png'),
+                // icon: Image.asset('assets/images/pokeball.png'),
+                icon: Image(
+                  image: AssetImage('assets/images/pokeball.png'),
+                  width: 75,
+                ),
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => Pokedex()),
                     );
                   },
-                  label: Text(
-                    'Sign In',
-                    style: TextStyle(color: Colors.white),
+                  label: const Text(
+                    'Go to Pokedex',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                    ),
                   )
               )
             ],
           ),
-        ),
-      ),
     );
   }
 }
