@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poke_team_planner/main_screens/poke_teams.dart';
 import 'package:poke_team_planner/main_screens/pokedex.dart';
 
 class Menu extends StatelessWidget {
@@ -21,11 +22,29 @@ class Menu extends StatelessWidget {
                 ),
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Pokedex()),
+                      MaterialPageRoute(builder: (context) => const Pokedex()),
                     );
                   },
                   label: const Text(
                     'Go to Pokedex',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                    ),
+                  )
+              ),
+              TextButton.icon(
+                  icon: Image(
+                    image: AssetImage('assets/images/poke_team.png'),
+                    width: 75,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const PokeTeams()),
+                    );
+                  },
+                  label: const Text(
+                    'Go to your teams',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 30,
