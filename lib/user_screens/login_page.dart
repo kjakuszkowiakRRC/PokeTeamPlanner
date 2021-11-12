@@ -33,8 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('username', user.displayName!);
+      // Preferences prefs = await SharedPreferences.getInstance();
+      // await prefs.setString('username', user.displayName!);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           // builder: (context) => ProfilePage(

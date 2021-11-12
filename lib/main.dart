@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'main_screens/menu.dart';
 import 'user_screens/login_page.dart';
 
-void main() {
+Future<void> main() async {
+  await Settings.init(cacheProvider: SharePreferenceCache());
   runApp(MyApp());
 }
 
