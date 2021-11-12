@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:poke_team_planner/universal/poke_app_bar.dart';
 
 import '../utils/fire_auth.dart';
 import 'login_page.dart';
@@ -7,6 +8,7 @@ import 'login_page.dart';
 //TODO: change styling
 //TODO: add date created?
 //TODO: test verify email
+//TODO: add profile pic
 
 class ProfilePage extends StatefulWidget {
   final User user;
@@ -28,9 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
+      appBar: PokeAppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:poke_team_planner/user_screens/profile_page.dart';
 
+//TODO: replace icon for button with profile pic
+
 class AccountAlert extends StatelessWidget {
   const AccountAlert({Key? key}) : super(key: key);
 
@@ -52,6 +54,23 @@ class AccountAlert extends StatelessWidget {
           showAlertDialog(context);
         },
       );
+      // TextButton.icon(
+      //   // icon: Image.asset('assets/images/pokeball.png'),
+      //     icon: Image(
+      //       image: AssetImage('assets/images/pokeball.png'),
+      //       width: 30,
+      //     ),
+      //     onPressed: () {
+      //       showAlertDialog(context);
+      //     },
+      //     label: const Text(
+      //       'Test',
+      //       style: TextStyle(
+      //         color: Colors.black,
+      //         // fontSize: 30,
+      //       ),
+      //     )
+      // );
   }
 
   showAlertDialog(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:poke_team_planner/universal/poke_app_bar.dart';
 
-class PokeTeams extends StatelessWidget {
-  const PokeTeams({Key? key}) : super(key: key);
+class Settings extends StatelessWidget {
+  const Settings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

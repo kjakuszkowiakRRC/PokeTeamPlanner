@@ -5,6 +5,7 @@ import 'package:poke_team_planner/main_screens/menu.dart';
 import 'package:poke_team_planner/user_screens/profile_page.dart';
 import 'package:poke_team_planner/user_screens/register_page.dart';
 import 'package:poke_team_planner/utils/validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/fire_auth.dart';
 //Todo: add a message for failed sign in
@@ -32,6 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('username', user.displayName!);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           // builder: (context) => ProfilePage(

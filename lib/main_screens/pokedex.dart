@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poke_team_planner/universal/poke_app_bar.dart';
 
 class Pokedex extends StatelessWidget {
   const Pokedex({Key? key}) : super(key: key);
@@ -6,9 +7,7 @@ class Pokedex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pokedex'),
-      ),
+      appBar: PokeAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Center(
