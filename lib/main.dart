@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'main_screens/menu.dart';
 import 'user_screens/login_page.dart';
+import 'utils/themes.dart';
 
 Future<void> main() async {
   await Settings.init(cacheProvider: SharePreferenceCache());
@@ -14,12 +16,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Poke Team Builder',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.cyan,
-      ),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      // themeMode: setTheme(),
+      // theme: ThemeData(
+      //   primarySwatch: Colors.cyan,
+      // ),
       home: LoginPage(),
       // home: Menu(),
     );
+  }
+
+  Future<ThemeMode> setTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isDark = prefs.getBool('isDark') ?? false;
+    return isDark ? ThemeMode.dark : ThemeMode.light;
   }
 }
 
