@@ -8,24 +8,27 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      SettingsGroup(
-        title: 'Group title',
-        children: <Widget>[
-          CheckboxSettingsTile(
-            settingKey: 'key-day-light-savings',
-            title: 'Daylight Time Saving',
-            enabledLabel: 'Enabled',
-            disabledLabel: 'Disabled',
-            leading: Icon(Icons.timelapse),
+      Scaffold(
+        appBar: PokeAppBar(),
+        body: SettingsGroup(
+            title: 'Group title',
+            children: <Widget>[
+              CheckboxSettingsTile(
+                settingKey: 'key-day-light-savings',
+                title: 'Daylight Time Saving',
+                enabledLabel: 'Enabled',
+                disabledLabel: 'Disabled',
+                leading: Icon(Icons.timelapse),
+              ),
+              SwitchSettingsTile(
+                settingKey: 'key-dark-mode',
+                title: 'Dark Mode',
+                enabledLabel: 'Enabled',
+                disabledLabel: 'Disabled',
+                leading: Icon(Icons.palette),
+              ),
+            ],
           ),
-          SwitchSettingsTile(
-            settingKey: 'key-dark-mode',
-            title: 'Dark Mode',
-            enabledLabel: 'Enabled',
-            disabledLabel: 'Disabled',
-            leading: Icon(Icons.palette),
-          ),
-        ],
       );
   }
 }
