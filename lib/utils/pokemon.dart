@@ -5,7 +5,6 @@ class Pokemon {
   final String url;
   PokemonDetails? pokemonDetails;
 
-//String get imageURL => imageurl here
   Pokemon({
     required this.name,
     required this.url,

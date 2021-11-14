@@ -27,7 +27,6 @@ class SettingsPage extends StatelessWidget {
                 disabledLabel: 'Disabled',
                 leading: Icon(Icons.palette),
                 onChange: (value) {
-                  // EasyDynamicTheme.of(context).changeTheme();
                 },
               ),
             ],

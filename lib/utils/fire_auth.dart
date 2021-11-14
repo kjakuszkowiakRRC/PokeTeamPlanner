@@ -63,7 +63,4 @@ class FireAuth {
 
     return refreshedUser;
   }
-
-  //Use FirebaseAuth.instance.signOut(); to signout a user
-  //Use user.sendEmailVerification(); to send an email verification
 }

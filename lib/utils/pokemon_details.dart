@@ -2,13 +2,11 @@
 class PokemonDetails {
   final int height;
   final int weight;
-  // final List<String> types;
   final String imageURL;
 
   PokemonDetails({
     required this.height,
     required this.weight,
-    // required this.types,
     required this.imageURL
   });
 

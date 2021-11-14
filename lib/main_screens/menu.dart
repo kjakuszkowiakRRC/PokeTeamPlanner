@@ -14,47 +14,9 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PokeAppBar(),
-      // appBar: AppBar(
-      //   title: Text('Poke Team Builder'),
-      //   actions: <Widget>[
-      //     AccountAlert(),
-      //     PopupMenuButton<String>(
-      //       // onSelected: handleClick(),
-      //       onSelected: (result) async {
-      //         switch (result) {
-      //           case 'Settings':
-      //             Navigator.of(context).pushReplacement(
-      //                 MaterialPageRoute(
-      //                   builder: (context) => Settings(),
-      //                 ),
-      //             );
-      //             break;
-      //           case 'Logout':
-      //             await FirebaseAuth.instance.signOut();
-      //             Navigator.of(context).pushReplacement(
-      //               MaterialPageRoute(
-      //                 builder: (context) => LoginPage(),
-      //               ),
-      //             );
-      //             break;
-      //         }
-      //       },
-      //       itemBuilder: (BuildContext context) {
-      //         return {'Settings','Logout'}.map((String choice) {
-      //           return PopupMenuItem<String>(
-      //             value: choice,
-      //             child: Text(choice)
-      //           );
-      //         }).toList();
-      //       },
-      //     ),
-      //   ],
-      // ),
       body: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton.icon(
-                // icon: Image.asset('assets/images/pokeball.png'),
                 icon: Image(
                   image: AssetImage('assets/images/pokeball.png'),
                   width: 75,
@@ -95,18 +57,3 @@ class Menu extends StatelessWidget {
     );
   }
 }
-
-// Future<void> handleClick(BuildContext context, String value) async {
-//   switch (value) {
-//     case 'Settings':
-//       break;
-//     case 'Logout':
-//       await FirebaseAuth.instance.signOut();
-//       Navigator.of(context).pushReplacement(
-//         MaterialPageRoute(
-//           builder: (context) => LoginPage(),
-//         ),
-//       );
-//       break;
-//   }
-// }

@@ -33,13 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      // Preferences prefs = await SharedPreferences.getInstance();
-      // await prefs.setString('username', user.displayName!);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          // builder: (context) => ProfilePage(
-          //   user: user,
-          // ),
           builder: (context) => Menu(),
         ),
       );
@@ -116,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
                           if (user != null) {
                             Navigator.of(context)
                                 .pushReplacement(
-                              // MaterialPageRoute(builder: (context) => ProfilePage(user: user)), //use this when wanting to get to user profile
                               MaterialPageRoute(builder: (context) => Menu()),
                             );
                           }
