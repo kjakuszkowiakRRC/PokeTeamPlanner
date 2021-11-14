@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:poke_team_planner/universal/poke_app_bar.dart';
 
-class PokemonDetailPage extends StatelessWidget {
-  const PokemonDetailPage({Key? key}) : super(key: key);
+//TODO: do api call here for details after passing pokemon object
 
+class PokemonDetailPage extends StatefulWidget {
+  var pokemonObject;
+  PokemonDetailPage({
+    this.pokemonObject
+  });
+
+  @override
+  State<PokemonDetailPage> createState() => _PokemonDetailPageState();
+}
+
+class _PokemonDetailPageState extends State<PokemonDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,6 +24,7 @@ class PokemonDetailPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(widget.pokemonObject.name)
             ],
           ),
         ),

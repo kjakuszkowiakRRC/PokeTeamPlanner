@@ -8,10 +8,10 @@ import 'package:poke_team_planner/universal/poke_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:poke_team_planner/utils/pokemon.dart';
 
-//TODO: add picture
 //TODO: add types to each entry
 //TODO: add search bar
 //TODO: add filter for types
+//TODO: fix slow loading speed
 
 class Pokedex extends StatefulWidget {
   const Pokedex({Key? key}) : super(key: key);
@@ -73,7 +73,7 @@ class _PokedexState extends State<Pokedex> {
   Future<List<Pokemon>> fetchPokemon() async {
     final response = await http
         // .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/?limit=3'));
-        .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/?limit=898'));
+        .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/?limit=151'));
     if (response.statusCode == 200) {
       Map firstMap = json.decode(response.body);
       List jsonResponse = firstMap["results"];
@@ -189,11 +189,11 @@ class _PokedexState extends State<Pokedex> {
         shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (context, index) {
-          return _tile(index, data[index].name, data[index].pokemonDetails, Icons.work);
+          return _tile(index, data[index].name, data[index].pokemonDetails, data[index]);
         });
   }
 
-  ListTile _tile(int index, String title, PokemonDetails pokemonDetails, IconData icon) {
+  ListTile _tile(int index, String title, PokemonDetails pokemonDetails, Pokemon pokemon) {
     return ListTile(
       title: Text("${index + 1}. ${title.toTitleCase()}",
           style: TextStyle(
@@ -208,7 +208,7 @@ class _PokedexState extends State<Pokedex> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PokemonDetailPage(),
+            builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
           ),
         );
       },
