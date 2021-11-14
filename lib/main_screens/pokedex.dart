@@ -12,6 +12,7 @@ import 'package:poke_team_planner/utils/pokemon.dart';
 //TODO: add search bar
 //TODO: add filter for types
 //TODO: fix slow loading speed
+//TODO: create all the pokemon objects then pass to list to incrementaslly add to screen to lower wait time
 
 class Pokedex extends StatefulWidget {
   const Pokedex({Key? key}) : super(key: key);
