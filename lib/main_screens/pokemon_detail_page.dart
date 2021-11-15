@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:poke_team_planner/universal/poke_app_bar.dart';
 
 //TODO: do api call here for details after passing pokemon object
-
+//TODO: shiny sprite??
 class PokemonDetailPage extends StatefulWidget {
   var pokemonObject;
   PokemonDetailPage({
