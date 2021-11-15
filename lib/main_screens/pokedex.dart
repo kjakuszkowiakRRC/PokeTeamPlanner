@@ -96,7 +96,7 @@ class _PokedexState extends State<Pokedex> {
       //   // print(pokemon.pokemonDetails!.imageURL);
       // }
       List<Pokemon> pokemonList = [];
-      int listSize = 9;
+      int listSize = 12;
       // final snackBar = SnackBar(content: Text("HELLO"));
       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       for(var i = 0; i < listSize; i++) {
@@ -118,6 +118,22 @@ class _PokedexState extends State<Pokedex> {
           }
           else {
             throw Exception('Failed to load Pokedex entry');
+          }
+
+          for(var ability in pokemon.abilities) {
+
+            final response = await http
+                .get(Uri.parse('https://pokeapi.co/api/v2/ability/${ability.name}'));
+            Map firstMap = json.decode(response.body);
+            List jsonResponse = firstMap['effect_entries'];
+            for (var key in jsonResponse){
+              if(key['language']['name'] == 'en') {
+                // print("TEST: ${key['effect']}");
+                ability.description = key['effect'];
+              }
+
+              // print(firstMap[key]);
+            }
           }
           // print("FIRST");
           pokemonList.add(pokemon);

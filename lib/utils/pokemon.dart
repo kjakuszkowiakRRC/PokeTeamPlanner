@@ -50,7 +50,7 @@ class Pokemon {
     String listContents = "";
 
     for(var item in list) {
-      listContents += item.name.toString().toTitleCase() + "/";
+      listContents += item.name.toString() + "/";
     }
     listContents = listContents.substring(0, listContents.length-1);
     return listContents;
@@ -81,9 +81,11 @@ class Pokemon {
 
 class Ability {
   final String name;
+  String? description;
 
   Ability({
     required this.name,
+    this.description
   });
 
   factory Ability.fromJson(Map<String, dynamic> json) {
