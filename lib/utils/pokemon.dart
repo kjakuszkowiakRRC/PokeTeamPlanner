@@ -74,7 +74,13 @@ class Pokemon {
   }
 
   String getPokedexEntry() {
-    String formattedPokedexEntry= pokedexEntry!.replaceAll("\n", " ");
+    String formattedPokedexEntry = pokedexEntry!
+        .replaceAll('\f',       '\n')
+        .replaceAll('\\u00ad\n','')
+        .replaceAll('\u00ad',   '')
+        .replaceAll(' -\n',     ' - ')
+        .replaceAll('-\n',      '-')
+        .replaceAll('\n',       ' ');
     return formattedPokedexEntry;
   }
 }

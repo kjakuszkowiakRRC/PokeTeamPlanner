@@ -7,7 +7,6 @@ import 'package:poke_team_planner/utils/pokemon.dart';
 import 'package:poke_team_planner/utils/string_extension.dart';
 import 'package:http/http.dart' as http;
 
-
 //TODO: do api call here for details after passing pokemon object
 //TODO: add event so when tapping on ability it shows popup of explanation
 class PokemonDetailPage extends StatefulWidget {
@@ -63,7 +62,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
               ),
               Text('Height: ${widget.pokemonObject.getHeight()}'),
               Text('Weight: ${widget.pokemonObject.getWeight()}'),
-              Text('Abilities: ${widget.pokemonObject.getListContents(widget.pokemonObject.abilities)}'),
               _buildAbilityRow(context, widget.pokemonObject.abilities),
               Text('Types: ${widget.pokemonObject.getListContents(widget.pokemonObject.types)}'),
               Text('Description: ${widget.pokemonObject.getPokedexEntry()}')
@@ -104,9 +102,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   }
 
   AlertDialog _buildPopupDialog(BuildContext context, Ability ability) {
-    return new AlertDialog(
+    return AlertDialog(
       title: Text(ability.name.toTitleCase()),
-      content: new Column(
+      content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
