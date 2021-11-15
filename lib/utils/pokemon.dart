@@ -8,6 +8,7 @@ class Pokemon {
   final String shinySpriteURL;
   final List<Ability> abilities;
   final List<Type> types;
+  String? pokedexEntry;
 
   // final String url;
   // PokemonDetails? pokemonDetails;
@@ -21,6 +22,7 @@ class Pokemon {
     required this.shinySpriteURL,
     required this.abilities,
     required this.types,
+    this.pokedexEntry,
   });
 
   factory Pokemon.fromJson(Map<String, dynamic> json) {
@@ -52,6 +54,28 @@ class Pokemon {
     }
     listContents = listContents.substring(0, listContents.length-1);
     return listContents;
+  }
+
+  String getHeight() {
+    // double formattedHeight = height;
+    String formattedHeight = "";
+
+    if(height > 10) {
+      formattedHeight = '${(height / 10).toString()}m';
+    }
+    else {
+      formattedHeight = '${(height * 10).toString()}cm';
+    }
+    return formattedHeight;
+  }
+
+  String getWeight() {
+    return '${(weight / 10).toString()}kg';
+  }
+
+  String getPokedexEntry() {
+    String formattedPokedexEntry= pokedexEntry!.replaceAll("\n", " ");
+    return formattedPokedexEntry;
   }
 }
 

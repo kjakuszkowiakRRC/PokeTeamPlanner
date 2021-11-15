@@ -12,6 +12,7 @@ import 'package:poke_team_planner/utils/pokemon.dart';
 //TODO: add filter for types
 //TODO: fix slow loading speed
 //TODO: use https://pokeapi.co/api/v2/type/12/ and the like for filtering by type
+//TODO: figure out why new pokemon images lag when switching for first time
 
 class Pokedex extends StatefulWidget {
   const Pokedex({Key? key}) : super(key: key);
@@ -95,7 +96,7 @@ class _PokedexState extends State<Pokedex> {
       //   // print(pokemon.pokemonDetails!.imageURL);
       // }
       List<Pokemon> pokemonList = [];
-      int listSize = 151;
+      int listSize = 9;
       // final snackBar = SnackBar(content: Text("HELLO"));
       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       for(var i = 0; i < listSize; i++) {
@@ -107,6 +108,17 @@ class _PokedexState extends State<Pokedex> {
         if(pokemonResponse.statusCode == 200) {
           // print("MORE FIRST");
           Pokemon pokemon = new Pokemon.fromJson(jsonDecode(pokemonResponse.body));
+
+          final pokedexEntryResponse = await http
+              .get(Uri.parse('https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}'));
+
+          if (response.statusCode == 200) {
+            pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse.body)['flavor_text_entries'][0]['flavor_text'];
+              // print(jsonDecode(pokedexEntryResponse.body)['flavor_text_entries'][0]['flavor_text']);
+          }
+          else {
+            throw Exception('Failed to load Pokedex entry');
+          }
           // print("FIRST");
           pokemonList.add(pokemon);
           // print("SECOND");
