@@ -8,6 +8,7 @@ class Pokemon {
   final String shinySpriteURL;
   final List<Ability> abilities;
   final List<Type> types;
+  List<String>? typesImageURL;
   String? pokedexEntry;
 
   // final String url;
@@ -22,6 +23,7 @@ class Pokemon {
     required this.shinySpriteURL,
     required this.abilities,
     required this.types,
+    this.typesImageURL,
     this.pokedexEntry,
   });
 
@@ -116,5 +118,11 @@ class Type {
     return Type(
       name: json['type']['name'],
     );
+  }
+
+  String getImageURL() {
+    String imageURL = '';
+
+    return "";
   }
 }

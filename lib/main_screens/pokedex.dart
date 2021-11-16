@@ -1,11 +1,16 @@
 import 'dart:convert';
 import 'package:poke_team_planner/main_screens/pokemon_detail_page.dart';
+import 'package:poke_team_planner/universal/pokemon_type_row.dart';
 import 'package:poke_team_planner/utils/string_extension.dart';
 
 import 'package:flutter/material.dart';
 import 'package:poke_team_planner/universal/poke_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:poke_team_planner/utils/pokemon.dart';
+
+import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart';
 
 //TODO: add types to each entry
 //TODO: add search bar
@@ -23,6 +28,7 @@ class Pokedex extends StatefulWidget {
 
 class _PokedexState extends State<Pokedex> {
   late Future<List<Pokemon>> futurePokemon;
+  late List pokemonTypeList;
 
   // Future<List<Pokemon>> fetchPokemon() async {
   //   final response = await http
@@ -96,7 +102,8 @@ class _PokedexState extends State<Pokedex> {
       //   // print(pokemon.pokemonDetails!.imageURL);
       // }
       List<Pokemon> pokemonList = [];
-      int listSize = 12;
+      // int listSize = 12;
+      int listSize = 151;
       // final snackBar = SnackBar(content: Text("HELLO"));
       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       for(var i = 0; i < listSize; i++) {
@@ -128,8 +135,23 @@ class _PokedexState extends State<Pokedex> {
             List jsonResponse = firstMap['effect_entries'];
             for (var key in jsonResponse){
               if(key['language']['name'] == 'en') {
-                // print("TEST: ${key['effect']}");
                 ability.description = key['effect'];
+              }
+
+            }
+          }
+
+          pokemon.typesImageURL = [];
+
+          for(var pokemonType in pokemon.types) {
+
+            // final response = await http
+            //     .get(Uri.parse('https://pokeapi.co/api/v2/ability/${ability.name}'));
+            // Map firstMap = json.decode(response.body);
+            // List jsonResponse = firstMap['effect_entries'];
+            for (var type in pokemonTypeList){
+              if(type['name'] == pokemonType.name) {
+                pokemon.typesImageURL!.add(type['image_path']);
               }
 
               // print(firstMap[key]);
@@ -160,6 +182,18 @@ class _PokedexState extends State<Pokedex> {
     }
   }
 
+
+  Future<String> loadJsonData() async {
+    var jsonText = await rootBundle.loadString('assets/types.json');
+    setState(() => pokemonTypeList = json.decode(jsonText));
+    return 'success';
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
+
   // Future<PokemonDetails> fetchPokemonDetails(String url) async {
   //   print(url);
   //   final response = await http
@@ -180,6 +214,7 @@ class _PokedexState extends State<Pokedex> {
   void initState() {
     super.initState();
     futurePokemon = fetchPokemon();
+    this.loadJsonData();
   }
 
   @override
@@ -249,7 +284,8 @@ class _PokedexState extends State<Pokedex> {
         shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (context, index) {
-          return _tile(index, data[index].name, data[index]);
+          // return _tile(index, data[index].name, data[index]);
+          return _pokedexEntry(index, data[index].name, data[index]);
         });
   }
 
@@ -262,6 +298,7 @@ class _PokedexState extends State<Pokedex> {
           )
       ),
       subtitle: Text(pokemon.getListContents(pokemon.types)),
+      // subtitle: AssetImage('assets/images/pokeball.png'),
       // subtitle: Text(subtitle),
       leading: Image.network(pokemon.spriteURL),
       onTap: () {
@@ -273,6 +310,43 @@ class _PokedexState extends State<Pokedex> {
         );
       },
 
+    );
+  }
+
+  GestureDetector _pokedexEntry(int index, String title, Pokemon pokemon) {
+    return GestureDetector(
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
+            ),
+          );
+        },
+        child: Row(
+          children: [
+            Image.network(pokemon.spriteURL),
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Text("${index + 1}. ${title.toTitleCase()}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                        )
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    PokemonTypeRow(pokemon.typesImageURL)
+                  ],
+                )
+              ],
+            ),
+          ],
+        )
     );
   }
 

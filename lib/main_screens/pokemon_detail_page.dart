@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:poke_team_planner/universal/poke_app_bar.dart';
+import 'package:poke_team_planner/universal/pokemon_type_row.dart';
 import 'package:poke_team_planner/utils/pokemon.dart';
 import 'package:poke_team_planner/utils/string_extension.dart';
 import 'package:http/http.dart' as http;
@@ -60,10 +61,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                       })
                 ],
               ),
+              PokemonTypeRow(widget.pokemonObject.typesImageURL),
               Text('Height: ${widget.pokemonObject.getHeight()}'),
               Text('Weight: ${widget.pokemonObject.getWeight()}'),
+              // PokemonTypeRow(widget.pokemonObject.typesImageURL),
               _buildAbilityRow(context, widget.pokemonObject.abilities),
-              Text('Types: ${widget.pokemonObject.getListContents(widget.pokemonObject.types)}'),
+              // Text('Types: ${widget.pokemonObject.getListContents(widget.pokemonObject.types)}'),
+              // _buildTypeRow(context, widget.pokemonObject.typesImageURL),
               Text('Description: ${widget.pokemonObject.getPokedexEntry()}')
             ],
           ),
@@ -77,12 +81,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text("Abilities:"),
-        ..._buildRowList(abilities),
+        ..._buildAbilityRowList(abilities),
     ],
     );
   }
 
-  List<Widget> _buildRowList(List<Ability> abilityList) {
+  List<Widget> _buildAbilityRowList(List<Ability> abilityList) {
     List<Widget> abilities = [];
     for(Ability ability in abilityList) {
       TextButton abilityWidget = TextButton(
@@ -121,5 +125,28 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
         ),
       ],
     );
+  }
+
+  Widget _buildTypeRow(BuildContext context, List<String> types) {
+    // print("_buildTypeRow: ");
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ..._buildTypeRowList(types),
+      ],
+    );
+  }
+
+  List<Widget> _buildTypeRowList(List<String> typeList) {
+    List<Widget> abilities = [];
+    for(String type in typeList) {
+      // print("TEST: " + type);
+      Image abilityWidget = Image(
+        image: AssetImage(type),
+        width: 100,
+      );
+      abilities.add(abilityWidget);
+    }
+    return abilities;
   }
 }

@@ -1,0 +1,74 @@
+[
+  {
+    "name": "bug",
+    "image_path": "assets/images/pokemon_types/bug.webp"
+  },
+  {
+    "name": "dark",
+    "image_path": "assets/images/pokemon_types/dark.webp"
+  },
+  {
+    "name": "dragon",
+    "image_path": "assets/images/pokemon_types/dragon.webp"
+  },
+  {
+    "name": "electric",
+    "image_path": "assets/images/pokemon_types/electric.webp"
+  },
+  {
+    "name": "fairy",
+    "image_path": "assets/images/pokemon_types/fairy.webp"
+  },
+  {
+    "name": "fighting",
+    "image_path": "assets/images/pokemon_types/fighting.png"
+  },
+  {
+    "name": "fire",
+    "image_path": "assets/images/pokemon_types/fire.png"
+  },
+  {
+    "name": "flying",
+    "image_path": "assets/images/pokemon_types/flying.webp"
+  },
+  {
+    "name": "ghost",
+    "image_path": "assets/images/pokemon_types/ghost.png"
+  },
+  {
+    "name": "grass",
+    "image_path": "assets/images/pokemon_types/grass.webp"
+  },
+  {
+    "name": "ground",
+    "image_path": "assets/images/pokemon_types/ground.webp"
+  },
+  {
+    "name": "ice",
+    "image_path": "assets/images/pokemon_types/ice.webp"
+  },
+  {
+    "name": "normal",
+    "image_path": "assets/images/pokemon_types/normal.png"
+  },
+  {
+    "name": "poison",
+    "image_path": "assets/images/pokemon_types/poison.png"
+  },
+  {
+    "name": "psychic",
+    "image_path": "assets/images/pokemon_types/psychic.png"
+  },
+  {
+    "name": "rock",
+    "image_path": "assets/images/pokemon_types/rock.webp"
+  },
+  {
+    "name": "steel",
+    "image_path": "assets/images/pokemon_types/steel.webp"
+  },
+  {
+    "name": "water",
+    "image_path": "assets/images/pokemon_types/water.webp"
+  }
+]
