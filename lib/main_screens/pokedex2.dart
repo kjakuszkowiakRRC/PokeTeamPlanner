@@ -20,16 +20,24 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 //TODO: use https://pokeapi.co/api/v2/type/12/ and the like for filtering by type
 //TODO: figure out why new pokemon images lag when switching for first time
 //TODO: caching into a local file or lazy loading list
-class Pokedex extends StatefulWidget {
-  const Pokedex({Key? key}) : super(key: key);
+class Pokedex2 extends StatefulWidget {
+  const Pokedex2({Key? key}) : super(key: key);
 
   @override
-  State<Pokedex> createState() => _PokedexState();
+  State<Pokedex2> createState() => _PokedexState2();
 }
 
-class _PokedexState extends State<Pokedex> {
+class _PokedexState2 extends State<Pokedex2> {
+  List<int> verticalData = [];
   late Future<List<Pokemon>> futurePokemon;
   late List pokemonTypeList;
+  late List<Pokemon> pokemonList = [];
+
+  final int increment = 10;
+  int lazyListCounter = 0;
+
+  bool isLoadingVertical = false;
+  bool isLoadingHorizontal = false;
 
   // Future<List<Pokemon>> fetchPokemon() async {
   //   final response = await http
@@ -103,11 +111,11 @@ class _PokedexState extends State<Pokedex> {
       //   // print(pokemon.pokemonDetails!.imageURL);
       // }
       List<Pokemon> pokemonList = [];
-      // int listSize = 12;
-      int listSize = 151;
+      int listSize = 12;
+      // int listSize = 20;
       // final snackBar = SnackBar(content: Text("HELLO"));
       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      for(var i = 0; i < listSize; i++) {
+      for(var i = 0; i < 20; i++) {
         // print(pokemon.url);
         // print("BEFORE");
         final pokemonResponse = await http
@@ -184,6 +192,7 @@ class _PokedexState extends State<Pokedex> {
   }
 
 
+
   Future<String> loadJsonData() async {
     var jsonText = await rootBundle.loadString('assets/types.json');
     setState(() => pokemonTypeList = json.decode(jsonText));
@@ -213,82 +222,129 @@ class _PokedexState extends State<Pokedex> {
 
   @override
   void initState() {
+    _loadMoreVertical();
     super.initState();
-    futurePokemon = fetchPokemon();
+    // futurePokemon = fetchPokemon();
     this.loadJsonData();
+  }
+
+  Future _loadMoreVertical() async {
+    setState(() {
+      isLoadingVertical = true;
+    });
+
+    // Add in an artificial delay
+    await new Future.delayed(const Duration(seconds: 2));
+
+    //put pokemon stuff under here
+
+    List<Pokemon> pokemonListFiller = [];
+    int listSize = 10;
+    // int listSize = 20;
+    // final snackBar = SnackBar(content: Text("HELLO"));
+    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    for (var i = lazyListCounter; i < lazyListCounter + 10; i++) {
+      // print(pokemon.url);
+      // print("BEFORE");
+      final pokemonResponse = await http
+          .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/${i + 1}'));
+      // print("HELLO");
+      if (pokemonResponse.statusCode == 200) {
+        // print("MORE FIRST");
+        Pokemon pokemon = new Pokemon.fromJson(
+            jsonDecode(pokemonResponse.body));
+
+        final pokedexEntryResponse = await http
+            .get(Uri.parse(
+            'https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}'));
+
+        if (pokedexEntryResponse.statusCode == 200) {
+          pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse
+              .body)['flavor_text_entries'][0]['flavor_text'];
+        }
+        else {
+          throw Exception('Failed to load Pokedex entry');
+        }
+
+        pokemon.typesImageURL = [];
+
+        for (var pokemonType in pokemon.types) {
+          for (var type in pokemonTypeList) {
+            if (type['name'] == pokemonType.name) {
+              pokemon.typesImageURL!.add(type['image_path']);
+            }
+          }
+        }
+        pokemonListFiller.add(pokemon);
+        print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+
+      }
+      else {
+        throw Exception('Failed to load Pokemon');
+      }
+    }
+    // for(Pokemon pokemon in pokemonListFiller) {
+    // print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+    print("ENDING");
+    pokemonList.addAll(
+        List.generate(
+            10, (index) => pokemonListFiller.elementAt(index)));
+    // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
+    // }
+    lazyListCounter += 10;
+
+    setState(() {
+      isLoadingVertical = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PokeAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FutureBuilder<List<Pokemon>>(
-                future: futurePokemon,
-                builder: (context, snapshot) {
-                  // List<dynamic> parsedListJson = jsonDecode("https://pokeapi.co/api/v2/pokemon");
-                  // List<Pokemon> itemsList = snapshot.data;
-                  if (snapshot.hasData) {
-                    // final snackBar = SnackBar(content: Text(snapshot.data!.first.name));
-                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    // // List<Pokemon>? itemsList = snapshot.data;
-                    // final snackBar2 = SnackBar(content: Text("TEEEEST"));
-                    // ScaffoldMessenger.of(context).showSnackBar(snackBar2);
-                    // return Wrap(children: _jobsListView(snapshot.data));
-                    // return Flexible(
-                    //   flex: 1,
-                    //     child: new Container(
-                    //         child:
-                    //           ListView.builder(
-                    //               scrollDirection: Axis.vertical,
-                    //               shrinkWrap: true,
-                    //               itemCount: snapshot.data!.length,
-                    //               itemBuilder: (context, index) {
-                    //                 return _tile(index, snapshot.data![index].name, Icons.work);
-                    //               })
-                    //       )
-                    //     );
-                    return Flexible(
-                        flex: 1,
-                        child:
-                            new Container(
-                                child: _jobsListView(snapshot.data)
-                            )
-                    );
-                    // return Text(snapshot.data);
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-
-                  // By default, show a loading spinner.
-                  return const CircularProgressIndicator();
-                },
+      body: LazyLoadScrollView(
+                isLoading: isLoadingVertical,
+                onEndOfPage: () => _loadMoreVertical(),
+                child: Scrollbar(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Vertical ListView',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: pokemonList.length,
+                        itemBuilder: (context, position) {
+                          pokemonList.elementAt(position);
+                          return DemoItem(pokemonList.elementAt(position), position);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               )
-            ],
-          ),
-        ),
-      ),
     );
   }
 
-  ListView _jobsListView(data) {
-    // fetchPokemonDetails(url);
-    // final snackBar = SnackBar(content: Text("HELLO"));
-    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          // return _tile(index, data[index].name, data[index]);
-          return _pokedexEntry(index, data[index].name, data[index]);
-        });
-  }
+  // ListView _pokemonListView(data) {
+  //   // fetchPokemonDetails(url);
+  //   // final snackBar = SnackBar(content: Text("HELLO"));
+  //   // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //   return ListView.builder(
+  //       scrollDirection: Axis.vertical,
+  //       shrinkWrap: true,
+  //       itemCount: data.length,
+  //       itemBuilder: (context, index) {
+  //         // return _tile(index, data[index].name, data[index]);
+  //         return _pokedexEntry(index, data[index].name, data[index]);
+  //       });
+  // }
 
   ListTile _tile(int index, String title, Pokemon pokemon) {
     return ListTile(
@@ -385,3 +441,54 @@ class _PokedexState extends State<Pokedex> {
   // future: pokemonDetails,
   // builder: (context, snapshot),
 }
+
+
+class DemoItem extends StatelessWidget {
+  final Pokemon pokemon;
+  final int position;
+
+  const DemoItem(
+      this.pokemon,
+      this.position, {
+        Key? key,
+      }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
+            ),
+          );
+        },
+        child: Row(
+          children: [
+            Image.network(pokemon.spriteURL),
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Text("${position + 1}. ${pokemon.name.toTitleCase()}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                        )
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    PokemonTypeRow(pokemon.typesImageURL)
+                  ],
+                )
+              ],
+            ),
+          ],
+        )
+    );
+  }
+}
+
