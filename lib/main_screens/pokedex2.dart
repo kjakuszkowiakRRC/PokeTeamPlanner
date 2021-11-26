@@ -40,6 +40,7 @@ class _PokedexState2 extends State<Pokedex2> {
   List<Pokemon> basePokemonList = [];
   late List<Pokemon> alteredPokemonList = [];
   late List<Pokemon> viewPokemonList = [];
+  late String _dropDownValue = "";
 
   final int increment = 10;
   int lazyListCounter = 0;
@@ -181,73 +182,223 @@ class _PokedexState2 extends State<Pokedex2> {
 
 
   Future _loadMoreVertical() async {
-    setState(() {
-      isLoadingVertical = true;
-    });
+    if(_dropDownValue.isNotEmpty && _dropDownValue != "Choose a filter") {
+      _loadTypes();
+    }
+    else {
+      setState(() {
+        isLoadingVertical = true;
+      });
+
+      // Add in an artificial delay
+      // await new Future.delayed(const Duration(seconds: 2));
+
+      //put pokemon stuff under here
+
+      List<Pokemon> pokemonListFiller = [];
+      int listSize = 10;
+      // int listSize = 20;
+      // final snackBar = SnackBar(content: Text("HELLO"));
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      for (var i = lazyListCounter; i < lazyListCounter + 10; i++) {
+        // print(pokemon.url);
+        // print("BEFORE");
+        final pokemonResponse = await http
+            .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/${i + 1}'));
+        // print("HELLO");
+        if (pokemonResponse.statusCode == 200) {
+          // print("MORE FIRST");
+          Pokemon pokemon = new Pokemon.fromJson(
+              jsonDecode(pokemonResponse.body));
+
+          final pokedexEntryResponse = await http
+              .get(Uri.parse(
+              'https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}'));
+
+          if (pokedexEntryResponse.statusCode == 200) {
+            pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse
+                .body)['flavor_text_entries'][0]['flavor_text'];
+          }
+          else {
+            throw Exception('Failed to load Pokedex entry');
+          }
+
+          pokemon.typesImageURL = [];
+
+          for (var pokemonType in pokemon.types) {
+            for (var type in pokemonTypeList) {
+              if (type['name'] == pokemonType.name) {
+                pokemon.typesImageURL!.add(type['image_path']);
+              }
+            }
+          }
+          pokemonListFiller.add(pokemon);
+          print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+
+        }
+        else {
+          throw Exception('Failed to load Pokemon');
+        }
+      }
+      // for(Pokemon pokemon in pokemonListFiller) {
+      // print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+      basePokemonList.addAll(
+          List.generate(
+              10, (index) => pokemonListFiller.elementAt(index)));
+      viewPokemonList = basePokemonList;
+      // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
+      // }
+      lazyListCounter += 10;
+
+      setState(() {
+        isLoadingVertical = false;
+      });
+    }
+
+  }
+
+
+
+  Future _loadTypes() async {
 
     // Add in an artificial delay
-    await new Future.delayed(const Duration(seconds: 2));
+    // await new Future.delayed(const Duration(seconds: 2));
 
     //put pokemon stuff under here
 
     List<Pokemon> pokemonListFiller = [];
-    int listSize = 10;
-    // int listSize = 20;
-    // final snackBar = SnackBar(content: Text("HELLO"));
-    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    for (var i = lazyListCounter; i < lazyListCounter + 10; i++) {
-      // print(pokemon.url);
-      // print("BEFORE");
-      final pokemonResponse = await http
-          .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/${i + 1}'));
-      // print("HELLO");
-      if (pokemonResponse.statusCode == 200) {
-        // print("MORE FIRST");
-        Pokemon pokemon = new Pokemon.fromJson(
-            jsonDecode(pokemonResponse.body));
 
-        final pokedexEntryResponse = await http
-            .get(Uri.parse(
-            'https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}'));
+    final pokemonResponse = await http
+        .get(Uri.parse('https://pokeapi.co/api/v2/type/${_dropDownValue.toLowerCase()}'));
 
-        if (pokedexEntryResponse.statusCode == 200) {
-          pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse
-              .body)['flavor_text_entries'][0]['flavor_text'];
-        }
-        else {
-          throw Exception('Failed to load Pokedex entry');
-        }
+      // List parsedListJson = jsonDecode(pokemonResponse.body.toString());
+      // List<Pokemon> pokemonList = List<Pokemon>.from(parsedListJson.map((i) => Pokemon.fromJson(i)));
 
-        pokemon.typesImageURL = [];
+    // print(data[0]);
 
-        for (var pokemonType in pokemon.types) {
-          for (var type in pokemonTypeList) {
-            if (type['name'] == pokemonType.name) {
-              pokemon.typesImageURL!.add(type['image_path']);
+      // print(pokemonList);
+
+    if (pokemonResponse.statusCode == 200) {
+      Map pokemonTypeMap = json.decode(pokemonResponse.body.toString());
+      List pokemonList = pokemonTypeMap["pokemon"];
+      // Iterable<Pokemon> jsonResponseTEST = pokemonList.map((pokemon) => new Pokemon.fromJson(pokemon)).toList();
+
+      int listSize = 10;
+      for (var i = lazyListCounter; i < lazyListCounter + 10; i++) {
+        // print(pokemon.url);
+        // print(pokemonList.elementAt(i));
+        // print(pokemonList.elementAt(i)["pokemon"]["name"]);
+        final pokemonResponse = await http
+            .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/${pokemonList.elementAt(i)["pokemon"]["name"]}'));
+        // print("HELLO");
+        if (pokemonResponse.statusCode == 200) {
+          // print("MORE FIRST");
+          Pokemon pokemon = new Pokemon.fromJson(
+              jsonDecode(pokemonResponse.body));
+
+          final pokedexEntryResponse = await http
+              .get(Uri.parse(
+              'https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}'));
+
+          if (pokedexEntryResponse.statusCode == 200) {
+            pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse
+                .body)['flavor_text_entries'][0]['flavor_text'];
+          }
+          else {
+            throw Exception('Failed to load Pokedex entry');
+          }
+
+          pokemon.typesImageURL = [];
+
+          for (var pokemonType in pokemon.types) {
+            for (var type in pokemonTypeList) {
+              if (type['name'] == pokemonType.name) {
+                pokemon.typesImageURL!.add(type['image_path']);
+              }
             }
           }
-        }
-        pokemonListFiller.add(pokemon);
-        print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+          pokemonListFiller.add(pokemon);
+          print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
 
+        }
+        else {
+          throw Exception('Failed to load Pokemon');
+        }
       }
-      else {
-        throw Exception('Failed to load Pokemon');
-      }
+      // for(Pokemon pokemon in pokemonListFiller) {
+      // print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+      basePokemonList.addAll(
+          List.generate(
+              10, (index) => pokemonListFiller.elementAt(index)));
+      viewPokemonList = basePokemonList;
+      // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
+      // }
+      lazyListCounter += 10;
+
+      setState(() {
+        isLoadingVertical = false;
+      });
+      // List pokemon = jsonDecode(pokemonResponse.body);
+      // print(pokemon);
+
     }
+    else {
+      throw Exception('Failed to load types list');
+    }
+    // int listSize = 10;
+    //
+    // // int listSize = 20;
+    // // final snackBar = SnackBar(content: Text("HELLO"));
+    // // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // for (var i = lazyListCounter; i < lazyListCounter + 10; i++) {
+    //   // print(pokemon.url);
+    //   // print("BEFORE");
+    //   final pokemonResponse = await http
+    //       .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/${i + 1}'));
+    //   // print("HELLO");
+    //   if (pokemonResponse.statusCode == 200) {
+    //     // print("MORE FIRST");
+    //     Pokemon pokemon = new Pokemon.fromJson(
+    //         jsonDecode(pokemonResponse.body));
+    //
+    //     final pokedexEntryResponse = await http
+    //         .get(Uri.parse(
+    //         'https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}'));
+    //
+    //     if (pokedexEntryResponse.statusCode == 200) {
+    //       pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse
+    //           .body)['flavor_text_entries'][0]['flavor_text'];
+    //     }
+    //     else {
+    //       throw Exception('Failed to load Pokedex entry');
+    //     }
+    //
+    //     pokemon.typesImageURL = [];
+    //
+    //     for (var pokemonType in pokemon.types) {
+    //       for (var type in pokemonTypeList) {
+    //         if (type['name'] == pokemonType.name) {
+    //           pokemon.typesImageURL!.add(type['image_path']);
+    //         }
+    //       }
+    //     }
+    //     pokemonListFiller.add(pokemon);
+    //     print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+    //
+    //   }
+    //   else {
+    //     throw Exception('Failed to load Pokemon');
+    //   }
+    // }
     // for(Pokemon pokemon in pokemonListFiller) {
     // print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
-    basePokemonList.addAll(
-        List.generate(
-            10, (index) => pokemonListFiller.elementAt(index)));
-    viewPokemonList = basePokemonList;
-    // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
-    // }
-    lazyListCounter += 10;
-
-    setState(() {
-      isLoadingVertical = false;
-    });
+    // basePokemonList.addAll(
+    //     List.generate(
+    //         10, (index) => pokemonListFiller.elementAt(index)));
+    // viewPokemonList = basePokemonList;
+    // // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
+    // // }
+    // lazyListCounter += 10;
   }
 
   @override
@@ -267,6 +418,7 @@ class _PokedexState2 extends State<Pokedex2> {
                       TextButton(
                       onPressed: () {
                         setState(() {
+                          _dropDownValue = "Choose a filter";
                           lazyListCounter = 0;
                           viewPokemonList.clear();
                           _loadMoreVertical();
@@ -275,6 +427,53 @@ print(basePokemonList.length);
                         print("THIS IS A TEST");
                       },
                     child: Text("Reset Page")),
+                      DropdownButton<String>(
+                        hint: _dropDownValue == null
+                            ? Text('Filter by Type')
+                            : Text(
+                          _dropDownValue,
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        isExpanded: true,
+                        iconSize: 30.0,
+                        style: TextStyle(color: Colors.blue),
+                        items: [
+                          'Bug',
+                          'Dark',
+                          'Dragon',
+                          'Electric',
+                          'Fairy',
+                          'Fighting',
+                          'Fire',
+                          'Flying',
+                          'Grass',
+                          'Ghost',
+                          'Ground',
+                          'Ice',
+                          'Normal',
+                          'Water',
+                          'Poison',
+                          'Psychic',
+                          'Steel',
+                          'Rock'].map(
+                              (val) {
+                            return DropdownMenuItem<String>(
+                              value: val,
+                              child: Text(val),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (val) {
+                          setState(
+                                () {
+                                  lazyListCounter = 0;
+                                  viewPokemonList.clear();
+                                  _dropDownValue = val!;
+                                  _loadTypes();
+                            },
+                          );
+                        },
+                      ),
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
@@ -379,7 +578,7 @@ class PokedexEntry extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text("${position + 1}. ${pokemon.name.toTitleCase()}",
+                    Text("${pokemon.name.toTitleCase()}",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 20,
