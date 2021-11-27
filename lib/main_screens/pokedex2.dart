@@ -19,12 +19,9 @@ import 'package:flutter/services.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 
-//TODO: add search bar
-//TODO: refactor pokemon api calls out
-//TODO: add filter for types
-//TODO: use https://pokeapi.co/api/v2/type/12/ and the like for filtering by type
 //TODO: figure out why new pokemon images lag when switching for first time
 //TODO: caching into a local file
+//TODO: refactor some code
 class Pokedex2 extends StatefulWidget {
   const Pokedex2({Key? key}) : super(key: key);
 
@@ -47,6 +44,8 @@ class _PokedexState2 extends State<Pokedex2> {
 
   bool isLoadingVertical = false;
   bool isLoadingHorizontal = false;
+
+  bool endOfList = false;
   late SearchBar searchBar;
 
   AppBar buildAppBar(BuildContext context) {
@@ -70,8 +69,14 @@ class _PokedexState2 extends State<Pokedex2> {
         'https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}'));
 
     if (pokedexEntryResponse.statusCode == 200) {
-      pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse
-          .body)['flavor_text_entries'][0]['flavor_text'];
+      Map firstMap = json.decode(pokedexEntryResponse.body);
+      List jsonResponse = firstMap['flavor_text_entries'];
+      for (var key in jsonResponse) {
+        if (key['language']['name'] == 'en') {
+          print(pokemon.pokedexEntry);
+          pokemon.pokedexEntry = key['flavor_text'];
+        }
+      }
     }
     else {
       throw Exception('Failed to load Pokedex entry');
@@ -186,6 +191,9 @@ class _PokedexState2 extends State<Pokedex2> {
       _loadTypes();
     }
     else {
+      int endOfListCounter = 0;
+
+      int alternateFormCounter = 0;
       setState(() {
         isLoadingVertical = true;
       });
@@ -200,7 +208,7 @@ class _PokedexState2 extends State<Pokedex2> {
       // int listSize = 20;
       // final snackBar = SnackBar(content: Text("HELLO"));
       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      for (var i = lazyListCounter; i < lazyListCounter + 10; i++) {
+      for (var i = lazyListCounter;  !endOfList && i < lazyListCounter + 10; i++) {
         // print(pokemon.url);
         // print("BEFORE");
         final pokemonResponse = await http
@@ -211,16 +219,49 @@ class _PokedexState2 extends State<Pokedex2> {
           Pokemon pokemon = new Pokemon.fromJson(
               jsonDecode(pokemonResponse.body));
 
+          String pokemonNameAltered = pokemon.name;
+          if (pokemon.name.indexOf('-') > 0 && pokemon.name.substring(pokemon.name.indexOf('-'), pokemon.name.length).length > 3) {
+            pokemonNameAltered = pokemon.name.substring(0, pokemon.name.indexOf('-'));
+            alternateFormCounter++;
+            if(alternateFormCounter == 2) {
+              endOfList = true;
+            }
+          }
+          // String pokemonNameAltered = pokemon.name.substring(0, pokemon.name.indexOf('-'));
           final pokedexEntryResponse = await http
               .get(Uri.parse(
-              'https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}'));
+              'https://pokeapi.co/api/v2/pokemon-species/${pokemonNameAltered}'));
 
           if (pokedexEntryResponse.statusCode == 200) {
-            pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse
-                .body)['flavor_text_entries'][0]['flavor_text'];
+            Map firstMap = json.decode(pokedexEntryResponse.body);
+            List jsonResponse = firstMap['flavor_text_entries'];
+            for (var key in jsonResponse) {
+              if (key['language']['name'] == 'en') {
+                print(pokemon.pokedexEntry);
+                pokemon.pokedexEntry = key['flavor_text'];
+              }
+            }
+
+              // pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse
+              //   .body)['flavor_text_entries'][0]['flavor_text'];
           }
           else {
             throw Exception('Failed to load Pokedex entry');
+          }
+
+
+          for(var ability in pokemon.abilities) {
+
+            final response = await http
+                .get(Uri.parse('https://pokeapi.co/api/v2/ability/${ability.name}'));
+            Map firstMap = json.decode(response.body);
+            List jsonResponse = firstMap['effect_entries'];
+            for (var key in jsonResponse){
+              if(key['language']['name'] == 'en') {
+                ability.description = key['effect'];
+              }
+
+            }
           }
 
           pokemon.typesImageURL = [];
@@ -233,6 +274,7 @@ class _PokedexState2 extends State<Pokedex2> {
             }
           }
           pokemonListFiller.add(pokemon);
+          endOfListCounter++;
           print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
 
         }
@@ -240,15 +282,20 @@ class _PokedexState2 extends State<Pokedex2> {
           throw Exception('Failed to load Pokemon');
         }
       }
-      // for(Pokemon pokemon in pokemonListFiller) {
-      // print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
-      basePokemonList.addAll(
-          List.generate(
-              10, (index) => pokemonListFiller.elementAt(index)));
-      viewPokemonList = basePokemonList;
-      // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
-      // }
-      lazyListCounter += 10;
+
+      int incrementer = 10;
+      if(pokemonListFiller.length < 10) {
+        incrementer = endOfListCounter-1;
+      }
+      if(pokemonListFiller.isNotEmpty) {
+        basePokemonList.addAll(
+            List.generate(
+                incrementer, (index) => pokemonListFiller.elementAt(index)));
+        viewPokemonList = basePokemonList;
+        // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
+        // }
+        lazyListCounter += 10;
+      }
 
       setState(() {
         isLoadingVertical = false;
@@ -260,6 +307,10 @@ class _PokedexState2 extends State<Pokedex2> {
 
 
   Future _loadTypes() async {
+    // bool endOfList = false;
+    int endOfListCounter = 0;
+    int alternateFormCounter = 0;
+
 
     // Add in an artificial delay
     // await new Future.delayed(const Duration(seconds: 2));
@@ -284,10 +335,11 @@ class _PokedexState2 extends State<Pokedex2> {
       // Iterable<Pokemon> jsonResponseTEST = pokemonList.map((pokemon) => new Pokemon.fromJson(pokemon)).toList();
 
       int listSize = 10;
-      for (var i = lazyListCounter; i < lazyListCounter + 10; i++) {
+      for (var i = lazyListCounter; !endOfList && i < lazyListCounter + 10; i++) {
         // print(pokemon.url);
         // print(pokemonList.elementAt(i));
         // print(pokemonList.elementAt(i)["pokemon"]["name"]);
+        print("alternateFormCounter: ${alternateFormCounter}");
         final pokemonResponse = await http
             .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/${pokemonList.elementAt(i)["pokemon"]["name"]}'));
         // print("HELLO");
@@ -295,16 +347,36 @@ class _PokedexState2 extends State<Pokedex2> {
           // print("MORE FIRST");
           Pokemon pokemon = new Pokemon.fromJson(
               jsonDecode(pokemonResponse.body));
+          print("BIG LIST " + pokemon.name + " | LENMGTGH: " + pokemonListFiller.length.toString());
 
+          String pokemonNameAltered = pokemon.name;
+          if (pokemon.name.indexOf('-') > 0 && pokemon.name.substring(pokemon.name.indexOf('-'), pokemon.name.length).length > 3) {
+            pokemonNameAltered = pokemon.name.substring(0, pokemon.name.indexOf('-'));
+            alternateFormCounter++;
+            if(alternateFormCounter == 2) {
+              endOfList = true;
+            }
+          }
+          // String pokemonNameAltered = pokemon.name.substring(0, pokemon.name.indexOf('-'));
           final pokedexEntryResponse = await http
               .get(Uri.parse(
-              'https://pokeapi.co/api/v2/pokemon-species/${pokemon.name}'));
+              'https://pokeapi.co/api/v2/pokemon-species/${pokemonNameAltered}'));
 
           if (pokedexEntryResponse.statusCode == 200) {
-            pokemon.pokedexEntry = jsonDecode(pokedexEntryResponse
-                .body)['flavor_text_entries'][0]['flavor_text'];
+            Map firstMap = json.decode(pokedexEntryResponse.body);
+            List jsonResponse = firstMap['flavor_text_entries'];
+            for (var key in jsonResponse) {
+              if (key['language']['name'] == 'en') {
+                print(pokemon.pokedexEntry);
+                pokemon.pokedexEntry = key['flavor_text'];
+              }
+            }
           }
           else {
+            // basePokemonList.addAll(
+          //     List.generate(
+          //         10, (index) => pokemonListFiller.elementAt(index)));
+          // viewPokemonList = basePokemonList;
             throw Exception('Failed to load Pokedex entry');
           }
 
@@ -318,22 +390,39 @@ class _PokedexState2 extends State<Pokedex2> {
             }
           }
           pokemonListFiller.add(pokemon);
-          print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+          // endOfListCounter++;
+          // print("BIG LIST " + pokemonListFiller.elementAt(endOfListCounter).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
 
+          endOfListCounter++;
         }
         else {
+          // endOfList = true;
           throw Exception('Failed to load Pokemon');
+
         }
       }
       // for(Pokemon pokemon in pokemonListFiller) {
       // print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
-      basePokemonList.addAll(
-          List.generate(
-              10, (index) => pokemonListFiller.elementAt(index)));
-      viewPokemonList = basePokemonList;
-      // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
-      // }
-      lazyListCounter += 10;
+      int incrementer = 10;
+      if(pokemonListFiller.length < 10) {
+        incrementer = endOfListCounter-1;
+      }
+      if(pokemonListFiller.isNotEmpty) {
+        basePokemonList.addAll(
+            List.generate(
+                incrementer, (index) => pokemonListFiller.elementAt(index)));
+        viewPokemonList = basePokemonList;
+        // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
+        // }
+        lazyListCounter += 10;
+      }
+      // basePokemonList.addAll(
+      //     List.generate(
+      //         incrementer, (index) => pokemonListFiller.elementAt(index)));
+      // viewPokemonList = basePokemonList;
+      // // print("BIG LIST " + pokemonList.last.name + " | LENMGTGH: " + pokemonList.length.toString());
+      // // }
+      // lazyListCounter += 10;
 
       setState(() {
         isLoadingVertical = false;
@@ -420,6 +509,7 @@ class _PokedexState2 extends State<Pokedex2> {
                         setState(() {
                           _dropDownValue = "Choose a filter";
                           lazyListCounter = 0;
+                          endOfList = false;
                           viewPokemonList.clear();
                           _loadMoreVertical();
                         });
@@ -467,6 +557,7 @@ print(basePokemonList.length);
                           setState(
                                 () {
                                   lazyListCounter = 0;
+                                  endOfList = false;
                                   viewPokemonList.clear();
                                   _dropDownValue = val!;
                                   _loadTypes();
@@ -502,7 +593,8 @@ print(basePokemonList.length);
         },
         child: Row(
           children: [
-            Image.network(pokemon.spriteURL),
+            // stopping this so i dont get blocked
+            // Image.network(pokemon.spriteURL),
             Column(
               children: [
                 Row(
@@ -573,12 +665,13 @@ class PokedexEntry extends StatelessWidget {
         },
         child: Row(
           children: [
-            Image.network(pokemon.spriteURL),
+            // stopping this so i dont get blocked
+            // Image.network(pokemon.spriteURL),
             Column(
               children: [
                 Row(
                   children: [
-                    Text("${pokemon.name.toTitleCase()}",
+                    Text("${pokemon.id}. ${pokemon.name.toTitleCase()}",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 20,

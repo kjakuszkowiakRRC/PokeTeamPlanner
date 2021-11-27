@@ -1,6 +1,7 @@
 import 'package:poke_team_planner/utils/string_extension.dart';
 
 class Pokemon {
+  final int id;
   final String name;
   final int height;
   final int weight;
@@ -16,6 +17,7 @@ class Pokemon {
 
 //String get imageURL => imageurl here
   Pokemon({
+    required this.id,
     required this.name,
     required this.height,
     required this.weight,
@@ -38,6 +40,7 @@ class Pokemon {
     // print(dataList);
 
     return Pokemon(
+      id: json['id'],
       name: json['name'],
       height: json['height'],
       weight: json['weight'],
