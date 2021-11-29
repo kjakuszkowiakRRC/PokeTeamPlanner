@@ -64,10 +64,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
               PokemonTypeRow(widget.pokemonObject.typesImageURL),
               Text('Height: ${widget.pokemonObject.getHeight()}'),
               Text('Weight: ${widget.pokemonObject.getWeight()}'),
-              // PokemonTypeRow(widget.pokemonObject.typesImageURL),
               _buildAbilityRow(context, widget.pokemonObject.abilities),
-              // Text('Types: ${widget.pokemonObject.getListContents(widget.pokemonObject.types)}'),
-              // _buildTypeRow(context, widget.pokemonObject.typesImageURL),
               Text('Description: ${widget.pokemonObject.getPokedexEntry()}'),
 
             ],
@@ -129,7 +126,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   }
 
   Widget _buildTypeRow(BuildContext context, List<String> types) {
-    // print("_buildTypeRow: ");
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -141,7 +137,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   List<Widget> _buildTypeRowList(List<String> typeList) {
     List<Widget> abilities = [];
     for(String type in typeList) {
-      // print("TEST: " + type);
       Image abilityWidget = Image(
         image: AssetImage(type),
         width: 100,

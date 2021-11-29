@@ -63,10 +63,6 @@ class _PokeTeamsState extends State<PokeTeams> {
                         children: <Widget>[
                           SizedBox(height: 8),
                           buildName(),
-                          SizedBox(height: 8),
-                          // buildAmount(),
-                          SizedBox(height: 8),
-                          // buildRadioButtons(),
                         ],
                       ),
                     ),
@@ -90,58 +86,14 @@ class _PokeTeamsState extends State<PokeTeams> {
                         }
                       },
                     )
-                    // buildCancelButton(context),
-                    // buildAddButton(context, isEditing: isEditing),
                   ],
                 ),
           ) ,
-          //   {
-          //   // addPokeTeam("Team1");
-          //   return AlertDialog(
-          //     title: Text("TEST"),
-          //     content: Form(
-          //       key: formKey,
-          //       child: SingleChildScrollView(
-          //         child: Column(
-          //           mainAxisSize: MainAxisSize.min,
-          //           children: <Widget>[
-          //             SizedBox(height: 8),
-          //             // buildName(),
-          //             SizedBox(height: 8),
-          //             // buildAmount(),
-          //             SizedBox(height: 8),
-          //             // buildRadioButtons(),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //     actions: <Widget>[
-          //       // buildCancelButton(context),
-          //       // buildAddButton(context, isEditing: isEditing),
-          //     ],
-          //   );
-          // },
+
           child: const Icon(Icons.add),
           backgroundColor: Colors.green,
         )
-      //   Padding(
-      //   padding: const EdgeInsets.all(30.0),
-      //   child: Center(
-      //     child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //       TextButton(
-      //       onPressed: () {
-      //         addPokeTeam("Team1");
-      //       },
-      //       child: Text(
-      //         "Add Pokemon Team",
-      //       ),
-      //       )
-      //       ],
-      //     ),
-      //   ),
-      // ),
+
     );
   }
 
@@ -209,14 +161,9 @@ class _PokeTeamsState extends State<PokeTeams> {
       BuildContext context,
       PokemonTeam pokemonTeam,
       ) {
-    // final color = transaction.isExpense ? Colors.red : Colors.green;
-    // final date = DateFormat.yMMMd().format(transaction.createdDate);
-    // final amount = '\$' + transaction.amount.toStringAsFixed(2);
-
     return Card(
       color: Colors.white,
       child: ListTile(
-        // tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         title: Text(
           pokemonTeam.name,
           maxLines: 2,
@@ -230,15 +177,6 @@ class _PokeTeamsState extends State<PokeTeams> {
           ),
         );
     },
-        // subtitle: Text(date),
-        // trailing: Text(
-        //   amount,
-        //   style: TextStyle(
-        //       color: color, fontWeight: FontWeight.bold, fontSize: 16),
-        // ),
-        // children: [
-        //   buildButtons(context, transaction),
-        // ],
       ),
     );
   }

@@ -25,7 +25,6 @@ class PokemonTypeRow extends StatelessWidget {
   List<Widget> _buildTypeRowList(List<String> typeList) {
     List<Widget> abilities = [];
     for(String type in typeList) {
-      // print("TEST: " + type);
       Image abilityWidget = Image(
         image: AssetImage(type),
         width: 100,

@@ -16,9 +16,5 @@ class PokemonTeam extends HiveObject {
 
   @HiveField(3)
   late String? userID;
-  // final String url;
-  // PokemonDetails? pokemonDetails;
-
-//String get imageURL => imageurl here
 
 }

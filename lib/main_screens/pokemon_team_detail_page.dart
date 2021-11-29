@@ -35,7 +35,6 @@ class _PokemonTeamDetailPageState extends State<PokemonTeamDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // preload(context, widget.pokemonTeamObject.shinySpriteURL);
     return Scaffold(
       appBar: PokeAppBar(),
       body: Column(
@@ -48,45 +47,6 @@ class _PokemonTeamDetailPageState extends State<PokemonTeamDetailPage> {
               child: Text("Delete team"))
         ],
       ) ,
-      // body: Padding(
-      //   padding: const EdgeInsets.all(30.0),
-      //   child: Center(
-      //     child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //         Text(widget.pokemonObject.name.toString().toTitleCase()),
-      //         Image.network(pokemonURL.isEmpty ? widget.pokemonObject.spriteURL : pokemonURL),
-      //         Row(
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           children: [
-      //             Text('Shiny Model Slider'),
-      //             Switch(
-      //                 value: isSwitched,
-      //                 onChanged: (value) {
-      //                   setState(() {
-      //                     if(!value) {
-      //                       pokemonURL = widget.pokemonObject.spriteURL;
-      //                     }
-      //                     else {
-      //                       pokemonURL = widget.pokemonObject.shinySpriteURL;
-      //                     }
-      //                     isSwitched = value;
-      //                   });
-      //                 })
-      //           ],
-      //         ),
-      //         PokemonTypeRow(widget.pokemonObject.typesImageURL),
-      //         Text('Height: ${widget.pokemonObject.getHeight()}'),
-      //         Text('Weight: ${widget.pokemonObject.getWeight()}'),
-      //         // PokemonTypeRow(widget.pokemonObject.typesImageURL),
-      //         _buildAbilityRow(context, widget.pokemonObject.abilities),
-      //         // Text('Types: ${widget.pokemonObject.getListContents(widget.pokemonObject.types)}'),
-      //         // _buildTypeRow(context, widget.pokemonObject.typesImageURL),
-      //         Text('Description: ${widget.pokemonObject.getPokedexEntry()}')
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 
@@ -142,7 +102,6 @@ class _PokemonTeamDetailPageState extends State<PokemonTeamDetailPage> {
   }
 
   Widget _buildTypeRow(BuildContext context, List<String> types) {
-    // print("_buildTypeRow: ");
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -154,7 +113,6 @@ class _PokemonTeamDetailPageState extends State<PokemonTeamDetailPage> {
   List<Widget> _buildTypeRowList(List<String> typeList) {
     List<Widget> abilities = [];
     for(String type in typeList) {
-      // print("TEST: " + type);
       Image abilityWidget = Image(
         image: AssetImage(type),
         width: 100,

@@ -8,42 +8,6 @@ import 'package:poke_team_planner/user_screens/profile_page.dart';
 class AccountAlert extends StatelessWidget {
   const AccountAlert({Key? key}) : super(key: key);
 
-  // Future<FirebaseApp> _initializeFirebase() async {
-  //   FirebaseApp firebaseApp = await Firebase.initializeApp();
-  //
-  //   User? user = FirebaseAuth.instance.currentUser;
-  //
-  //   if (user != null) {
-  //     Navigator.of(context).pushReplacement(
-  //       MaterialPageRoute(
-  //         builder: (context) => ProfilePage(
-  //           user: user,
-  //         ),
-  //       ),
-  //     );
-  //   }
-  //
-  //   return firebaseApp;
-  // }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return AlertDialog(
-  //       title: Text("Account Page"),
-  //       content: Text("Would you like to continue to your account page? All your current progress might be lost."),
-  //       actions: [
-  //         FlatButton(
-  //           child: Text("Cancel"),
-  //           onPressed:  () {
-  //             Navigator.of(context).pop();
-  //           },
-  //         ),
-  //         FlatButton(
-  //           child: Text("Continue"),
-  //           onPressed:  () {},
-  //         )
-  //       ],
-  //     );
-  // }
   @override
   Widget build(BuildContext context) {
     return
@@ -54,23 +18,6 @@ class AccountAlert extends StatelessWidget {
           showAlertDialog(context);
         },
       );
-      // TextButton.icon(
-      //   // icon: Image.asset('assets/images/pokeball.png'),
-      //     icon: Image(
-      //       image: AssetImage('assets/images/pokeball.png'),
-      //       width: 30,
-      //     ),
-      //     onPressed: () {
-      //       showAlertDialog(context);
-      //     },
-      //     label: const Text(
-      //       'Test',
-      //       style: TextStyle(
-      //         color: Colors.black,
-      //         // fontSize: 30,
-      //       ),
-      //     )
-      // );
   }
 
   showAlertDialog(BuildContext context) {

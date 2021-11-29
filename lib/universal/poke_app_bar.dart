@@ -16,7 +16,6 @@ class PokeAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         AccountAlert(),
         PopupMenuButton<String>(
-          // onSelected: handleClick(),
           onSelected: (result) async {
             switch (result) {
               case 'Settings':
