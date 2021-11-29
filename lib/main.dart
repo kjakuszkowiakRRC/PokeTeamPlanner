@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:poke_team_planner/utils/pokemon_team.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main_screens/menu.dart';
 import 'user_screens/login_page.dart';
 import 'utils/themes.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
   await Settings.init(cacheProvider: SharePreferenceCache());
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  
+  Hive.registerAdapter(PokemonTeamAdapter());
+  await Hive.openBox<PokemonTeam>('pokemon_teams');
+
   runApp(MyApp());
 }
 

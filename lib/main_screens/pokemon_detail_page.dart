@@ -23,6 +23,7 @@ class PokemonDetailPage extends StatefulWidget {
 class _PokemonDetailPageState extends State<PokemonDetailPage> {
   bool isSwitched = false;
   String pokemonURL = "";
+  //some sort of add team thing
 
   static void preload(BuildContext context, String path) {
     var configuration = createLocalImageConfiguration(context);
@@ -68,7 +69,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
               _buildAbilityRow(context, widget.pokemonObject.abilities),
               // Text('Types: ${widget.pokemonObject.getListContents(widget.pokemonObject.types)}'),
               // _buildTypeRow(context, widget.pokemonObject.typesImageURL),
-              Text('Description: ${widget.pokemonObject.getPokedexEntry()}')
+              Text('Description: ${widget.pokemonObject.getPokedexEntry()}'),
+
             ],
           ),
         ),

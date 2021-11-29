@@ -73,7 +73,7 @@ class _PokedexState2 extends State<Pokedex2> {
       List jsonResponse = firstMap['flavor_text_entries'];
       for (var key in jsonResponse) {
         if (key['language']['name'] == 'en') {
-          print(pokemon.pokedexEntry);
+          // print(pokemon.pokedexEntry);
           pokemon.pokedexEntry = key['flavor_text'];
         }
       }
@@ -237,7 +237,7 @@ class _PokedexState2 extends State<Pokedex2> {
             List jsonResponse = firstMap['flavor_text_entries'];
             for (var key in jsonResponse) {
               if (key['language']['name'] == 'en') {
-                print(pokemon.pokedexEntry);
+                // print(pokemon.pokedexEntry);
                 pokemon.pokedexEntry = key['flavor_text'];
               }
             }
@@ -275,7 +275,7 @@ class _PokedexState2 extends State<Pokedex2> {
           }
           pokemonListFiller.add(pokemon);
           endOfListCounter++;
-          print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+          // print("BIG LIST " + pokemonListFiller.elementAt(0).name + " | LENMGTGH: " + pokemonListFiller.length.toString());
 
         }
         else {
@@ -339,7 +339,7 @@ class _PokedexState2 extends State<Pokedex2> {
         // print(pokemon.url);
         // print(pokemonList.elementAt(i));
         // print(pokemonList.elementAt(i)["pokemon"]["name"]);
-        print("alternateFormCounter: ${alternateFormCounter}");
+        // print("alternateFormCounter: ${alternateFormCounter}");
         final pokemonResponse = await http
             .get(Uri.parse('https://pokeapi.co/api/v2/pokemon/${pokemonList.elementAt(i)["pokemon"]["name"]}'));
         // print("HELLO");
@@ -347,7 +347,7 @@ class _PokedexState2 extends State<Pokedex2> {
           // print("MORE FIRST");
           Pokemon pokemon = new Pokemon.fromJson(
               jsonDecode(pokemonResponse.body));
-          print("BIG LIST " + pokemon.name + " | LENMGTGH: " + pokemonListFiller.length.toString());
+          // print("BIG LIST " + pokemon.name + " | LENMGTGH: " + pokemonListFiller.length.toString());
 
           String pokemonNameAltered = pokemon.name;
           if (pokemon.name.indexOf('-') > 0 && pokemon.name.substring(pokemon.name.indexOf('-'), pokemon.name.length).length > 3) {
@@ -367,7 +367,7 @@ class _PokedexState2 extends State<Pokedex2> {
             List jsonResponse = firstMap['flavor_text_entries'];
             for (var key in jsonResponse) {
               if (key['language']['name'] == 'en') {
-                print(pokemon.pokedexEntry);
+                // print(pokemon.pokedexEntry);
                 pokemon.pokedexEntry = key['flavor_text'];
               }
             }
@@ -513,8 +513,6 @@ class _PokedexState2 extends State<Pokedex2> {
                           viewPokemonList.clear();
                           _loadMoreVertical();
                         });
-print(basePokemonList.length);
-                        print("THIS IS A TEST");
                       },
                     child: Text("Reset Page")),
                       DropdownButton<String>(
@@ -633,7 +631,6 @@ print(basePokemonList.length);
 
   reloadFullList() {
     // viewPokemonList.clear();
-    print("THIS IS A TEST");
     // viewPokemonList = basePokemonList;
 
     setState(() {
