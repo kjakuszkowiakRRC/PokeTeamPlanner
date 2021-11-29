@@ -23,7 +23,6 @@ class PokemonDetailPage extends StatefulWidget {
 class _PokemonDetailPageState extends State<PokemonDetailPage> {
   bool isSwitched = false;
   String pokemonURL = "";
-  //some sort of add team thing
 
   static void preload(BuildContext context, String path) {
     var configuration = createLocalImageConfiguration(context);
