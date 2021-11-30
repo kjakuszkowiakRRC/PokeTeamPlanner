@@ -9,7 +9,7 @@ class PokemonTeam extends HiveObject {
   late String name;
 
   @HiveField(1)
-  late Map pokemonTeam;
+  late List pokemonTeam;
 
   @HiveField(2)
   late List pokemonTeamTypes;

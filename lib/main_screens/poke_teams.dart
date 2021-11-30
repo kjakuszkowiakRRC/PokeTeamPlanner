@@ -27,12 +27,12 @@ class _PokeTeamsState extends State<PokeTeams> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
 
-  @override
-  void dispose() {
-    Hive.close();
-
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   Hive.close();
+  //
+  //   super.dispose();
+  // }
 
   void onClickedDone(String name) {
     addPokeTeam(name);
@@ -45,7 +45,7 @@ class _PokeTeamsState extends State<PokeTeams> {
       body: ValueListenableBuilder<Box<PokemonTeam>>(
         valueListenable: Boxes.getPokemonTeams().listenable(),
         builder: (context, box, _) {
-          final pokemonTeams = box.values.toList().cast<PokemonTeam>().where((element) => element.userID == FirebaseAuth.instance.currentUser?.uid).toList();
+          List<PokemonTeam>? pokemonTeams = box.values.toList().cast<PokemonTeam>().where((element) => element.userID == FirebaseAuth.instance.currentUser?.uid).toList();
 
           return buildContent(pokemonTeams);
         },
@@ -158,7 +158,7 @@ class _PokeTeamsState extends State<PokeTeams> {
   Future addPokeTeam(String name) async {
    final pokeTeam = PokemonTeam()
        ..name = name
-       ..pokemonTeam = {}
+       ..pokemonTeam = []
        ..pokemonTeamTypes = []
        ..userID = FirebaseAuth.instance.currentUser?.uid;
 
@@ -196,7 +196,7 @@ class _PokeTeamsState extends State<PokeTeams> {
               itemBuilder: (BuildContext context, int index) {
                 final pokemonTeam = pokemonTeams[index];
 
-                return buildTransaction(context, pokemonTeam);
+                return buildTeam(context, pokemonTeam);
               },
             ),
           ),
@@ -205,7 +205,7 @@ class _PokeTeamsState extends State<PokeTeams> {
     }
   }
 
-  Widget buildTransaction(
+  Widget buildTeam(
       BuildContext context,
       PokemonTeam pokemonTeam,
       ) {

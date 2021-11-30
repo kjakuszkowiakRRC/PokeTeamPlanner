@@ -6,6 +6,7 @@ import 'package:poke_team_planner/main_screens/settings.dart';
 import 'package:poke_team_planner/universal/account_alert.dart';
 import 'package:poke_team_planner/universal/pokemon_type_row.dart';
 import 'package:poke_team_planner/user_screens/login_page.dart';
+import 'package:poke_team_planner/utils/pokedex_entry.dart';
 import 'package:poke_team_planner/utils/string_extension.dart';
 
 import 'package:flutter/material.dart';
@@ -568,8 +569,8 @@ class _PokedexState2 extends State<Pokedex2> {
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: viewPokemonList.length,
                         itemBuilder: (context, position) {
-                          viewPokemonList.elementAt(position);
-                          return PokedexEntry(viewPokemonList.elementAt(position), position);
+                          // viewPokemonList.elementAt(position);
+                          return PokedexEntry(viewPokemonList.elementAt(position));
                         },
                       ),
                     ],
@@ -639,53 +640,5 @@ class _PokedexState2 extends State<Pokedex2> {
   }
 }
 
-class PokedexEntry extends StatelessWidget {
-  final Pokemon pokemon;
-  final int position;
 
-  const PokedexEntry(
-      this.pokemon,
-      this.position, {
-        Key? key,
-      }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
-            ),
-          );
-        },
-        child: Row(
-          children: [
-            // stopping this so i dont get blocked
-            // Image.network(pokemon.spriteURL),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Text("${pokemon.id}. ${pokemon.name.toTitleCase()}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        )
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    PokemonTypeRow(pokemon.typesImageURL)
-                  ],
-                )
-              ],
-            ),
-          ],
-        )
-    );
-  }
-}
 

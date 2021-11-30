@@ -18,9 +18,9 @@ class PokemonTeamAdapter extends TypeAdapter<PokemonTeam> {
     };
     return PokemonTeam()
       ..name = fields[0] as String
-      ..pokemonTeam = (fields[1] as Map).cast<dynamic, dynamic>()
+      ..pokemonTeam = (fields[1] as List).cast<dynamic>()
       ..pokemonTeamTypes = (fields[2] as List).cast<dynamic>()
-      ..userID = fields[3] as String;
+      ..userID = fields[3] as String?;
   }
 
   @override

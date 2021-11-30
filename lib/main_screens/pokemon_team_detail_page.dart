@@ -5,6 +5,7 @@ import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:poke_team_planner/main_screens/poke_teams.dart';
 import 'package:poke_team_planner/universal/poke_app_bar.dart';
 import 'package:poke_team_planner/universal/pokemon_type_row.dart';
+import 'package:poke_team_planner/utils/pokedex_entry.dart';
 import 'package:poke_team_planner/utils/pokemon.dart';
 import 'package:poke_team_planner/utils/pokemon_team.dart';
 import 'package:poke_team_planner/utils/string_extension.dart';
@@ -41,6 +42,39 @@ class _PokemonTeamDetailPageState extends State<PokemonTeamDetailPage> {
       body: Column(
         children: [
           Text(widget.pokemonTeamObject.name.toString().toTitleCase()),
+          // Text('Team Size: ' + widget.pokemonTeamObject.length.toString()),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: widget.pokemonTeamObject.pokemonTeam.length,
+                  itemBuilder: (context, position) {
+                    widget.pokemonTeamObject.pokemonTeam.elementAt(position);
+                    return PokedexEntry(widget.pokemonTeamObject.pokemonTeam.elementAt(position));
+                  },
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: widget.pokemonTeamObject.pokemonTeamTypes.length,
+                  itemBuilder: (context, position) {
+                    // widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position);
+                    return Text(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position));
+                  },
+                ),
+              ],
+            ),
+          ),
           TextButton(
               onPressed: () {
                 deletePokemonTeam(widget.pokemonTeamObject);
