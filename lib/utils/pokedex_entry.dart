@@ -7,10 +7,12 @@ import 'package:poke_team_planner/utils/string_extension.dart';
 
 class PokedexEntry extends StatelessWidget {
   final Pokemon pokemon;
+  final bool isFromPokedexPage;
   // final int position;
 
   const PokedexEntry(
       this.pokemon,
+      this.isFromPokedexPage,
       {
       // this.position, {
         Key? key,
@@ -23,7 +25,7 @@ class PokedexEntry extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
+              builder: (context) => PokemonDetailPage(pokemonObject: pokemon, isFromPokedex: isFromPokedexPage,),
             ),
           );
         },
@@ -50,6 +52,16 @@ class PokedexEntry extends StatelessWidget {
                 )
               ],
             ),
+            // if (!isFromPokedexPage) IconButton(
+            //   icon: const Icon(Icons.clear),
+            //   tooltip: 'Remove from team',
+            //   onPressed: () {
+            //     // setState(() {
+            //     //
+            //     // });
+            //   },
+            // ),
+            // Text('Volume : $_volume')
           ],
         )
     );

@@ -570,7 +570,7 @@ class _PokedexState2 extends State<Pokedex2> {
                         itemCount: viewPokemonList.length,
                         itemBuilder: (context, position) {
                           // viewPokemonList.elementAt(position);
-                          return PokedexEntry(viewPokemonList.elementAt(position));
+                          return PokedexEntry(viewPokemonList.elementAt(position), true);
                         },
                       ),
                     ],
@@ -586,7 +586,7 @@ class _PokedexState2 extends State<Pokedex2> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
+              builder: (context) => PokemonDetailPage(pokemonObject: pokemon, isFromPokedex: true,),
             ),
           );
         },

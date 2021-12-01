@@ -253,13 +253,13 @@ class _PokedexState extends State<Pokedex> {
                     //               })
                     //       )
                     //     );
-                    return Flexible(
-                        flex: 1,
-                        child:
-                            new Container(
-                                child: _jobsListView(snapshot.data)
-                            )
-                    );
+                    // return Flexible(
+                    //     flex: 1,
+                    //     child:
+                    //         new Container(
+                    //             child: _jobsListView(snapshot.data)
+                    //         )
+                    // );
                     // return Text(snapshot.data);
                   } else if (snapshot.hasError) {
                     return Text('${snapshot.error}');
@@ -276,53 +276,53 @@ class _PokedexState extends State<Pokedex> {
     );
   }
 
-  ListView _jobsListView(data) {
-    // fetchPokemonDetails(url);
-    // final snackBar = SnackBar(content: Text("HELLO"));
-    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          // return _tile(index, data[index].name, data[index]);
-          return _pokedexEntry(index, data[index].name, data[index]);
-        });
-  }
+  // ListView _jobsListView(data) {
+  //   // fetchPokemonDetails(url);
+  //   // final snackBar = SnackBar(content: Text("HELLO"));
+  //   // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //   return ListView.builder(
+  //       scrollDirection: Axis.vertical,
+  //       shrinkWrap: true,
+  //       itemCount: data.length,
+  //       itemBuilder: (context, index) {
+  //         // return _tile(index, data[index].name, data[index]);
+  //         return _pokedexEntry(index, data[index].name, data[index]);
+  //       });
+  // }
 
-  ListTile _tile(int index, String title, Pokemon pokemon) {
-    return ListTile(
-      title: Text("${index + 1}. ${title.toTitleCase()}",
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 20,
-          )
-      ),
-      subtitle: Text(pokemon.getListContents(pokemon.types)),
-      // subtitle: AssetImage('assets/images/pokeball.png'),
-      // subtitle: Text(subtitle),
-      leading: Image.network(pokemon.spriteURL),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
-          ),
-        );
-      },
-
-    );
-  }
+  // ListTile _tile(int index, String title, Pokemon pokemon) {
+  //   return ListTile(
+  //     title: Text("${index + 1}. ${title.toTitleCase()}",
+  //         style: TextStyle(
+  //           fontWeight: FontWeight.w500,
+  //           fontSize: 20,
+  //         )
+  //     ),
+  //     subtitle: Text(pokemon.getListContents(pokemon.types)),
+  //     // subtitle: AssetImage('assets/images/pokeball.png'),
+  //     // subtitle: Text(subtitle),
+  //     leading: Image.network(pokemon.spriteURL),
+  //     onTap: () {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
+  //         ),
+  //       );
+  //     },
+  //
+  //   );
+  // }
 
   GestureDetector _pokedexEntry(int index, String title, Pokemon pokemon) {
     return GestureDetector(
         onTap: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => PokemonDetailPage(pokemonObject: pokemon),
+          //   ),
+          // );
         },
         child: Row(
           children: [

@@ -17,8 +17,10 @@ import 'package:http/http.dart' as http;
 //TODO: add event so when tapping on ability it shows popup of explanation
 class PokemonDetailPage extends StatefulWidget {
   var pokemonObject;
+  bool isFromPokedex;
   PokemonDetailPage({
-    this.pokemonObject
+    this.pokemonObject,
+    required this.isFromPokedex
   });
 
   @override
@@ -109,7 +111,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
               // Text('Types: ${widget.pokemonObject.getListContents(widget.pokemonObject.types)}'),
               // _buildTypeRow(context, widget.pokemonObject.typesImageURL),
               Text('Description: ${widget.pokemonObject.getPokedexEntry()}'),
-              Row(
+
+              if (widget.isFromPokedex) Row(
                 children: [
                   DropdownButton<PokemonTeam>(
                     value: selectedPokemonTeam,
@@ -139,29 +142,30 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                       onPressed: () {
                         if (selectedPokemonTeam.pokemonTeam.length < 6) {
                           selectedPokemonTeam.pokemonTeam.add(widget.pokemonObject);
-                          if (selectedPokemonTeam.pokemonTeamTypes.isEmpty) {
+                          selectedPokemonTeam.pokemonTeam.elementAt(0);
+                          // if (selectedPokemonTeam.pokemonTeamTypes.isEmpty) {
                             for(var type in widget.pokemonObject.types) {
                               print("NONE");
                               selectedPokemonTeam.pokemonTeamTypes.add(type.name);
                             }
-                          }
-                          else {
-                            List tempList = [];
-                            for(var typeTop in widget.pokemonObject.types) {
-                              // var contain = listOfDownloadedFile.where((element) => element.Url == "your URL link")
-                              // print("FIRST LEVEL: "+typeTop.name);
-                              // // for(var type in widget.pokemonObject.types) {
-                              //   print("SECOND LEVEL: "+type.name);
-                                if(!selectedPokemonTeam.pokemonTeamTypes.contains(typeTop.name)) {
-                                  print("DEEP INSIDE " + typeTop.name);
-                                  tempList.add(typeTop.name);
-                                }
-                              // }
-
-                            }
-                            selectedPokemonTeam.pokemonTeamTypes.addAll(tempList);
-                            tempList = [];
-                          }
+                          // }
+                          // else {
+                          //   List tempList = [];
+                          //   for(var typeTop in widget.pokemonObject.types) {
+                          //     // var contain = listOfDownloadedFile.where((element) => element.Url == "your URL link")
+                          //     // print("FIRST LEVEL: "+typeTop.name);
+                          //     // // for(var type in widget.pokemonObject.types) {
+                          //     //   print("SECOND LEVEL: "+type.name);
+                          //       if(!selectedPokemonTeam.pokemonTeamTypes.contains(typeTop.name)) {
+                          //         // print("DEEP INSIDE " + typeTop.name);
+                          //         tempList.add(typeTop.name);
+                          //       }
+                          //     // }
+                          //
+                          //   }
+                          //   selectedPokemonTeam.pokemonTeamTypes.addAll(tempList);
+                          //   tempList = [];
+                          // }
                           // for(var typeTop in selectedPokemonTeam.pokemonTeamTypes) {
                           //
                           //   for(var type in widget.pokemonObject.types) {
