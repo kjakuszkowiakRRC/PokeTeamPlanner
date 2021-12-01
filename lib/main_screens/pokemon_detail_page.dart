@@ -112,7 +112,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
               // _buildTypeRow(context, widget.pokemonObject.typesImageURL),
               Text('Description: ${widget.pokemonObject.getPokedexEntry()}'),
 
-              if (widget.isFromPokedex) Row(
+              if (widget.isFromPokedex && pokemonTeams.isNotEmpty) Row(
                 children: [
                   DropdownButton<PokemonTeam>(
                     value: selectedPokemonTeam,
@@ -208,30 +208,45 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
     } else {
 
 
-      return Column(
-        children: [
-          SizedBox(height: 24),
-          Text(
-            'Pokemon Teams: ',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: Colors.red,
-            ),
+      return Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(widget.pokemonObject.name.toString().toTitleCase()),
+              Image.network(pokemonURL.isEmpty ? widget.pokemonObject.spriteURL : pokemonURL),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Shiny Model Slider'),
+                  Switch(
+                      value: isSwitched,
+                      onChanged: (value) {
+                        setState(() {
+                          if(!value) {
+                            pokemonURL = widget.pokemonObject.spriteURL;
+                          }
+                          else {
+                            pokemonURL = widget.pokemonObject.shinySpriteURL;
+                          }
+                          isSwitched = value;
+                        });
+                      })
+                ],
+              ),
+              PokemonTypeRow(widget.pokemonObject.typesImageURL),
+              Text('Height: ${widget.pokemonObject.getHeight()}'),
+              Text('Weight: ${widget.pokemonObject.getWeight()}'),
+              // PokemonTypeRow(widget.pokemonObject.typesImageURL),
+              _buildAbilityRow(context, widget.pokemonObject.abilities),
+              // Text('Types: ${widget.pokemonObject.getListContents(widget.pokemonObject.types)}'),
+              // _buildTypeRow(context, widget.pokemonObject.typesImageURL),
+              Text('Description: ${widget.pokemonObject.getPokedexEntry()}'),
+              Text('No teams available. Please create a team to add to it.'),
+            ],
           ),
-          SizedBox(height: 24),
-          // Expanded(
-          //   child: ListView.builder(
-          //     padding: EdgeInsets.all(8),
-          //     itemCount: pokemonTeams.length,
-          //     itemBuilder: (BuildContext context, int index) {
-          //       final pokemonTeam = pokemonTeams[index];
-          //
-          //       // return buildTeam(context, pokemonTeam);
-          //     },
-          //   ),
-          // ),
-        ],
+        ),
       );
     }
   }

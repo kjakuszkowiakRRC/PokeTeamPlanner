@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:poke_team_planner/main_screens/menu.dart';
 import 'package:poke_team_planner/user_screens/profile_page.dart';
 import 'package:poke_team_planner/utils/fire_auth.dart';
 import 'package:poke_team_planner/utils/validator.dart';
@@ -129,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         .pushAndRemoveUntil(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            ProfilePage(user: user),
+                                            Menu(),
                                       ),
                                       ModalRoute.withName('/'),
                                     );

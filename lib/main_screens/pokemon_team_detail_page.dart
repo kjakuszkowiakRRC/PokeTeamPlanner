@@ -88,50 +88,61 @@ class _PokemonTeamDetailPageState extends State<PokemonTeamDetailPage> {
                 return TypeTable(pokemonTeam: widget.pokemonTeamObject);
 
                 // return Text("HELLO");
-                return ListView(
-                    shrinkWrap: true,
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: widget.pokemonTeamObject.pokemonTeamTypes.length,
-                        itemBuilder: (context, position) {
-                          print(pokemonTypeList);
-                          // widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position);
-                          if(!pokemonTypeListRefined.contains(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position))) {
-                            pokemonTypeListRefined.add(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position));
-                            // return Text(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position));
-
-                            for (var type in pokemonTypeList){
-                              if(type['name'] == widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position)) {
-                                // pokemon.typesImageURL!.add(type['image_path']);
-                                print(type['image_path']);
-                                return Image(
-                                  image: AssetImage(type['image_path']),
-                                  width: 100,
-                                );
-                              }
-
-                              // print(firstMap[key]);
-                            }
-
-                          }
-                          return SizedBox.shrink();
-                        },
-                      ),
-                    ],
-                  // ),
-                );
+                // return ListView(
+                //     shrinkWrap: true,
+                //     children: [
+                //       ListView.builder(
+                //         shrinkWrap: true,
+                //
+                //         physics: NeverScrollableScrollPhysics(),
+                //         itemCount: widget.pokemonTeamObject.pokemonTeamTypes.length,
+                //         itemBuilder: (context, position) {
+                //           print(pokemonTypeList);
+                //           // widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position);
+                //           if(!pokemonTypeListRefined.contains(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position))) {
+                //             pokemonTypeListRefined.add(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position));
+                //             // return Text(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position));
+                //
+                //             for (var type in pokemonTypeList){
+                //               if(type['name'] == widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position)) {
+                //                 // pokemon.typesImageURL!.add(type['image_path']);
+                //                 print(type['image_path']);
+                //                 return Image(
+                //                   image: AssetImage(type['image_path']),
+                //                   width: 100,
+                //                 );
+                //               }
+                //
+                //               // print(firstMap[key]);
+                //             }
+                //
+                //           }
+                //           return SizedBox.shrink();
+                //         },
+                //       ),
+                //     ],
+                //   // ),
+                // );
               },
 
             ),
           ),
-          TextButton(
-              onPressed: () {
-                deletePokemonTeam(widget.pokemonTeamObject);
-              },
-              child: Text("Delete team"))
+          // TextButton(
+          //     onPressed: () {
+          //       deletePokemonTeam(widget.pokemonTeamObject);
+          //       // Navigator.pushAndRemoveUntil<dynamic>(
+          //       //   context,
+          //       //   MaterialPageRoute<dynamic>(
+          //       //     builder: (BuildContext context) => YourPageNameGoesHere(),
+          //       //   ),
+          //       //       (route) => false,//if you want to disable back feature set to false
+          //       // );
+          //       Navigator.pop(context);
+          //       // Navigator.of(context).push(
+          //       //   MaterialPageRoute(builder: (context) => const PokeTeams()),
+          //       // );
+          //     },
+          //     child: Text("Delete team"))
         ],
       ) ,
       // body: Padding(

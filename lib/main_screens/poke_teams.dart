@@ -145,6 +145,15 @@ class _PokeTeamsState extends State<PokeTeams> {
     );
   }
 
+  void deletePokemonTeam(pokemonTeamObject) {
+    pokemonTeamObject.delete();
+
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => super.widget));
+  }
+
   Widget buildName() => TextFormField(
     controller: nameController,
     decoration: InputDecoration(
@@ -209,37 +218,122 @@ class _PokeTeamsState extends State<PokeTeams> {
       BuildContext context,
       PokemonTeam pokemonTeam,
       ) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextButton(
+            child: Text(
+                pokemonTeam.name,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 30,
+                ),
+              ), onPressed: () {
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PokemonTeamDetailPage(pokemonTeamObject: pokemonTeam),
+                    ),
+                  );
+          },
+          ),
+          // ListTile(
+          //   // tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          //     title: Text(
+          //       pokemonTeam.name,
+          //       maxLines: 2,
+          //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          //     ),
+          //     onTap: (){
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => PokemonTeamDetailPage(pokemonTeamObject: pokemonTeam),
+          //         ),
+          //       );
+          //     }
+          // ),
+
+          IconButton(
+            icon: const Icon(Icons.clear),
+            tooltip: 'Remove from team',
+            onPressed: () {
+              deletePokemonTeam(pokemonTeam);
+            },
+          )
+        ],
+      );
     // final color = transaction.isExpense ? Colors.red : Colors.green;
     // final date = DateFormat.yMMMd().format(transaction.createdDate);
     // final amount = '\$' + transaction.amount.toStringAsFixed(2);
 
-    return Card(
-      color: Colors.white,
-      child: ListTile(
-        // tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        title: Text(
-          pokemonTeam.name,
-          maxLines: 2,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        onTap: (){
-          Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PokemonTeamDetailPage(pokemonTeamObject: pokemonTeam),
-          ),
-        );
-    },
-        // subtitle: Text(date),
-        // trailing: Text(
-        //   amount,
-        //   style: TextStyle(
-        //       color: color, fontWeight: FontWeight.bold, fontSize: 16),
-        // ),
-        // children: [
-        //   buildButtons(context, transaction),
-        // ],
-      ),
-    );
+    // return Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: [
+    //   ListTile(
+    //       // tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+    //       title: Text(
+    //         pokemonTeam.name,
+    //         maxLines: 2,
+    //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+    //       ),
+    //       onTap: (){
+    //         Navigator.push(
+    //           context,
+    //           MaterialPageRoute(
+    //           builder: (context) => PokemonTeamDetailPage(pokemonTeamObject: pokemonTeam),
+    //           ),
+    //         );
+    //       }
+    //   ),
+    //
+    //     IconButton(
+    //       icon: const Icon(Icons.clear),
+    //       tooltip: 'Remove from team',
+    //       onPressed: () {
+    //         deletePokemonTeam(widget.pokemonTeamObject);
+    //       },
+    //     )
+    //   ],
+    // )
+      // color: Colors.white,
+
+      // children: [
+    //     ListTile(
+    //     // tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+    //     title: Text(
+    //       pokemonTeam.name,
+    //       maxLines: 2,
+    //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+    //     ),
+    //     onTap: (){
+    //       Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //         builder: (context) => PokemonTeamDetailPage(pokemonTeamObject: pokemonTeam),
+    //         ),
+    //       );
+    //     }
+    // )
+    //   ,
+    //   IconButton(
+    //     icon: const Icon(Icons.clear),
+    //     tooltip: 'Remove from team',
+    //     onPressed: () {
+    //       deletePokemonTeam(widget.pokemonTeamObject);
+    //     },
+    //   )
+    // },
+    //     // subtitle: Text(date),
+    //     // trailing: Text(
+    //     //   amount,
+    //     //   style: TextStyle(
+    //     //       color: color, fontWeight: FontWeight.bold, fontSize: 16),
+    //     // ),
+    //     // children: [
+    //     //   buildButtons(context, transaction),
+    //     // ],
+    //   ),
   }
 }

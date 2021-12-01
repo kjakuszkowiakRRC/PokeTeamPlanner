@@ -3,6 +3,7 @@ import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:poke_team_planner/utils/pokemon_team.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main_screens/menu.dart';
+import 'main_screens/poke_teams.dart';
 import 'user_screens/login_page.dart';
 import 'utils/themes.dart';
 import 'package:hive/hive.dart';
@@ -13,7 +14,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  
+
   Hive.registerAdapter(PokemonTeamAdapter());
   await Hive.openBox<PokemonTeam>('pokemon_teams');
 
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
       //   primarySwatch: Colors.cyan,
       // ),
       home: LoginPage(),
+      routes: {
+        // '/': (BuildContext context) => Menu(),
+        '/team': (BuildContext context) => PokeTeams()
+      },
       // home: Menu(),
     );
   }
