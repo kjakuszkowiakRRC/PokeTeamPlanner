@@ -20,16 +20,24 @@ class PokeAppBar extends StatelessWidget implements PreferredSizeWidget {
           onSelected: (result) async {
             switch (result) {
               case 'Settings':
-                await Settings.init();
-                Navigator.of(context).pushReplacement(
+                // await Settings.init();
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (context) => SettingsPage(),
+                //   ),
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => SettingsPage(),
                   ),
                 );
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(builder: (context) => const SettingsPage()),
+                    // );
+                // );
                 break;
               case 'Logout':
                 await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushReplacement(
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => LoginPage(),
                   ),

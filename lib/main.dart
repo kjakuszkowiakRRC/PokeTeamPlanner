@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:poke_team_planner/utils/pokemon_team.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:theme_provider/theme_provider.dart';
 import 'main_screens/menu.dart';
 import 'main_screens/poke_teams.dart';
 import 'user_screens/login_page.dart';
@@ -11,6 +12,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
   await Settings.init(cacheProvider: SharePreferenceCache());
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool? isDarkTheme = prefs.getBool('theme');
+  print("ISDARKTHEME: " + isDarkTheme.toString());
+  ThemeData theme = ThemeData.light();
+  if(isDarkTheme != null) {
+    if(isDarkTheme) {
+      theme = ThemeData.dark();
+    }
+  }
 
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
@@ -18,35 +28,56 @@ Future<void> main() async {
   Hive.registerAdapter(PokemonTeamAdapter());
   await Hive.openBox<PokemonTeam>('pokemon_teams');
 
-  runApp(MyApp());
+  runApp(MyApp(theme: theme));
 }
 
 class MyApp extends StatelessWidget {
+  final ThemeData theme;
+
+
+
+  const MyApp({
+    required this.theme,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Poke Team Builder',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      // themeMode: setTheme(),
-      // theme: ThemeData(
-      //   primarySwatch: Colors.cyan,
-      // ),
-      home: LoginPage(),
-      routes: {
-        // '/': (BuildContext context) => Menu(),
-        '/team': (BuildContext context) => PokeTeams()
-      },
-      // home: Menu(),
+    return ThemeProvider(
+        saveThemesOnChange: true,
+        loadThemeOnInit: true,
+        themes: [
+          AppTheme.light(),
+          AppTheme.dark(),
+        ],
+      child: ThemeConsumer(
+          child: Builder(
+          builder: (themeContext) => MaterialApp(
+              title: 'Poke Team Builder',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeProvider.themeOf(themeContext).data,
+              // theme: ThemeData.light(),
+              // darkTheme: ThemeData.dark(),
+              // themeMode: setTheme(),
+              // theme: ThemeData(
+              //   primarySwatch: Colors.cyan,
+              // ),
+              home: LoginPage(),
+              routes: {
+                // '/': (BuildContext context) => Menu(),
+                '/team': (BuildContext context) => PokeTeams()
+              },
+              // home: Menu(),
+            )
+          )
+      )
     );
   }
 
-  Future<ThemeMode> setTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isDark = prefs.getBool('isDark') ?? false;
-    return isDark ? ThemeMode.dark : ThemeMode.light;
-  }
+  // ThemeData setTheme() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   bool isDark = prefs.getBool('isDark') ?? false;
+  //   return isDark ? ThemeData.dark() : ThemeData.light();
+  // }
 }
 
 class MyHomePage extends StatefulWidget {

@@ -85,7 +85,11 @@ class _PokemonTeamDetailPageState extends State<PokemonTeamDetailPage> {
             child: FutureBuilder(
               future: loadJsonData,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return TypeTable(pokemonTeam: widget.pokemonTeamObject);
+                print(widget.pokemonTeamObject.pokemonTeam.isEmpty);
+                if(widget.pokemonTeamObject.pokemonTeam.isNotEmpty) {
+                  return TypeTable(pokemonTeam: widget.pokemonTeamObject);
+                }
+                return SizedBox.shrink();
 
                 // return Text("HELLO");
                 // return ListView(
