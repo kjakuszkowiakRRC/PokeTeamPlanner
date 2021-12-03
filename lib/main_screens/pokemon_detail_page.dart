@@ -537,7 +537,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
     //       ),
     //     ),
     //   );
-    }
+    // }
   }
 
   Widget _buildAbilityRow(BuildContext context, List<Ability> abilities) {
