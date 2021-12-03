@@ -38,7 +38,7 @@ class _PokedexState2 extends State<Pokedex> {
   List<Pokemon> basePokemonList = [];
   late List<Pokemon> alteredPokemonList = [];
   late List<Pokemon> viewPokemonList = [];
-  late String _dropDownValue = "";
+  late String _dropDownValue = "Choose a filter";
 
   final int increment = 10;
   int lazyListCounter = 0;
@@ -51,7 +51,7 @@ class _PokedexState2 extends State<Pokedex> {
 
   AppBar buildAppBar(BuildContext context) {
     return new AppBar(
-      title: Text('Poke Team Builder'),
+      title: Text('Pokedex'),
       actions: [searchBar.getSearchAction(context)
       ],
     );
@@ -608,7 +608,7 @@ class _PokedexState2 extends State<Pokedex> {
                 ),
                 Row(
                   children: [
-                    PokemonTypeRow(pokemon.typesImageURL)
+                    PokemonTypeRow(pokemon.typesImageURL, true)
                   ],
                 )
               ],

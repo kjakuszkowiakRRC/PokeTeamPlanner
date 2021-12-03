@@ -45,38 +45,38 @@ class _ProfilePageState extends State<ProfilePage> {
               style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(height: 16.0),
-            _currentUser.emailVerified
-                ? Text(
-              'Email verified',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1!
-                  .copyWith(color: Colors.green),
-            )
-                : Text(
-              'Email not verified',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1!
-                  .copyWith(color: Colors.red),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await _currentUser.sendEmailVerification();
-              },
-              child: Text('Verify email'),
-            ),
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () async {
-                User? user = await FireAuth.refreshUser(_currentUser);
-                if (user != null) {
-                  setState(() {
-                    _currentUser = user;
-                  });
-                }
-              },
-            ),
+            // _currentUser.emailVerified
+            //     ? Text(
+            //   'Email verified',
+            //   style: Theme.of(context)
+            //       .textTheme
+            //       .bodyText1!
+            //       .copyWith(color: Colors.green),
+            // )
+            //     : Text(
+            //   'Email not verified',
+            //   style: Theme.of(context)
+            //       .textTheme
+            //       .bodyText1!
+            //       .copyWith(color: Colors.red),
+            // ),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     await _currentUser.sendEmailVerification();
+            //   },
+            //   child: Text('Verify email'),
+            // ),
+            // IconButton(
+            //   icon: Icon(Icons.refresh),
+            //   onPressed: () async {
+            //     User? user = await FireAuth.refreshUser(_currentUser);
+            //     if (user != null) {
+            //       setState(() {
+            //         _currentUser = user;
+            //       });
+            //     }
+            //   },
+            // ),
             ElevatedButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut();

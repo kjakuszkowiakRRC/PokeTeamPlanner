@@ -63,7 +63,22 @@ class _PokemonTeamDetailPageState extends State<PokemonTeamDetailPage> {
       appBar: PokeAppBar(),
       body: Column(
         children: [
-          Text(widget.pokemonTeamObject.name.toString().toTitleCase()),
+          // Text(widget.pokemonTeamObject.name.toString().toTitleCase()),
+          SizedBox(height: 5),
+          RichText(
+              text: new TextSpan(
+                // Note: Styles for TextSpans must be explicitly defined.
+                // Child text spans will inherit styles from parent
+                style: new TextStyle(
+                  fontSize: 30.0,
+                ),
+                children: <TextSpan>[
+                  new TextSpan(text: widget.pokemonTeamObject.name.toString().toTitleCase(), style: new TextStyle(fontWeight: FontWeight.bold)),
+                ]
+                ,
+              )
+          ),
+          SizedBox(height: 5),
           // Text('Team Size: ' + widget.pokemonTeamObject.length.toString()),
           Expanded(
             child: ListView(
@@ -81,56 +96,84 @@ class _PokemonTeamDetailPageState extends State<PokemonTeamDetailPage> {
               ],
             ),
           ),
-          Expanded(
-            child: FutureBuilder(
-              future: loadJsonData,
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                print(widget.pokemonTeamObject.pokemonTeam.isEmpty);
-                if(widget.pokemonTeamObject.pokemonTeam.isNotEmpty) {
-                  return TypeTable(pokemonTeam: widget.pokemonTeamObject);
-                }
-                return SizedBox.shrink();
+          ElevatedButton(
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Team Breakdown'),
+                      content: SingleChildScrollView(
+                        child: TypeTable(pokemonTeam: widget.pokemonTeamObject),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
 
-                // return Text("HELLO");
-                // return ListView(
-                //     shrinkWrap: true,
-                //     children: [
-                //       ListView.builder(
-                //         shrinkWrap: true,
-                //
-                //         physics: NeverScrollableScrollPhysics(),
-                //         itemCount: widget.pokemonTeamObject.pokemonTeamTypes.length,
-                //         itemBuilder: (context, position) {
-                //           print(pokemonTypeList);
-                //           // widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position);
-                //           if(!pokemonTypeListRefined.contains(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position))) {
-                //             pokemonTypeListRefined.add(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position));
-                //             // return Text(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position));
-                //
-                //             for (var type in pokemonTypeList){
-                //               if(type['name'] == widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position)) {
-                //                 // pokemon.typesImageURL!.add(type['image_path']);
-                //                 print(type['image_path']);
-                //                 return Image(
-                //                   image: AssetImage(type['image_path']),
-                //                   width: 100,
-                //                 );
-                //               }
-                //
-                //               // print(firstMap[key]);
-                //             }
-                //
-                //           }
-                //           return SizedBox.shrink();
-                //         },
-                //       ),
-                //     ],
-                //   // ),
-                // );
               },
+              child: Text("Check your team compatibility")),
 
-            ),
-          ),
+
+          SizedBox(height: 5),
+          // Expanded(
+          //   child: FutureBuilder(
+          //     future: loadJsonData,
+          //     builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          //       print(widget.pokemonTeamObject.pokemonTeam.isEmpty);
+          //       if(widget.pokemonTeamObject.pokemonTeam.isNotEmpty) {
+          //         return TypeTable(pokemonTeam: widget.pokemonTeamObject);
+          //       }
+          //       return SizedBox.shrink();
+          //
+          //       // return Text("HELLO");
+          //       // return ListView(
+          //       //     shrinkWrap: true,
+          //       //     children: [
+          //       //       ListView.builder(
+          //       //         shrinkWrap: true,
+          //       //
+          //       //         physics: NeverScrollableScrollPhysics(),
+          //       //         itemCount: widget.pokemonTeamObject.pokemonTeamTypes.length,
+          //       //         itemBuilder: (context, position) {
+          //       //           print(pokemonTypeList);
+          //       //           // widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position);
+          //       //           if(!pokemonTypeListRefined.contains(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position))) {
+          //       //             pokemonTypeListRefined.add(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position));
+          //       //             // return Text(widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position));
+          //       //
+          //       //             for (var type in pokemonTypeList){
+          //       //               if(type['name'] == widget.pokemonTeamObject.pokemonTeamTypes.elementAt(position)) {
+          //       //                 // pokemon.typesImageURL!.add(type['image_path']);
+          //       //                 print(type['image_path']);
+          //       //                 return Image(
+          //       //                   image: AssetImage(type['image_path']),
+          //       //                   width: 100,
+          //       //                 );
+          //       //               }
+          //       //
+          //       //               // print(firstMap[key]);
+          //       //             }
+          //       //
+          //       //           }
+          //       //           return SizedBox.shrink();
+          //       //         },
+          //       //       ),
+          //       //     ],
+          //       //   // ),
+          //       // );
+          //     },
+          //
+          //   ),
+          // ),
           // TextButton(
           //     onPressed: () {
           //       deletePokemonTeam(widget.pokemonTeamObject);
@@ -564,61 +607,62 @@ class _TypeTableState extends State<TypeTable> {
                   Column(children:[Text('Types', style: TextStyle(fontSize: 20.0))]),
                 ]),
                 TableRow( children: [
-                  Column(children:[Text('Attacking - Strengths (2x Damage)')]),
+                  Column(
+                      children:[Text('Attacking - Strengths (2x Damage)',textAlign: TextAlign.center)]),
                   Column(
                       children:
                       typeAttackingStrengths.map((value) {
-                        print("TABLE CELL?? " + value);
+                        // print("TABLE CELL?? " + value);
                         return Text(value,);
                         //Return an empty Container for non-matching case
                       }).toList()),
                 ]),
                 TableRow( children: [
-                  Column(children:[Text('Attacking - Weaknesses (0.5x Damage)')]),
+                  Column(children:[Text('Attacking - Weaknesses (0.5x Damage)',textAlign: TextAlign.center)]),
                   Column(
                       children:
                       typeAttackingWeaknesses.map((value) {
-                        print("TABLE CELL?? " + value);
+                        // print("TABLE CELL?? " + value);
                         return Text(value,);
                         //Return an empty Container for non-matching case
                       }).toList()),
                 ]),
                 TableRow( children: [
-                  Column(children:[Text('Attacking - Not Effective (0x Damage)')]),
+                  Column(children:[Text('Attacking - Not Effective (0x Damage)',textAlign: TextAlign.center)]),
                   Column(
                       children:
                       typeAttackingNullified.map((value) {
-                        print("TABLE CELL?? " + value);
+                        // print("TABLE CELL?? " + value);
                         return Text(value,);
                         //Return an empty Container for non-matching case
                       }).toList()),
                 ]),
                 TableRow( children: [
-                  Column(children:[Text('Defending - Strengths (2x Damage)')]),
+                  Column(children:[Text('Defending - Strengths (2x Damage)',textAlign: TextAlign.center)]),
                   Column(
                       children:
                       typeDefendingStrengths.map((value) {
-                        print("TABLE CELL?? " + value);
+                        // print("TABLE CELL?? " + value);
                         return Text(value,);
                         //Return an empty Container for non-matching case
                       }).toList()),
                 ]),
                 TableRow( children: [
-                  Column(children:[Text('Defending - Weaknesses (0.5x Damage)')]),
+                  Column(children:[Text('Defending - Weaknesses (0.5x Damage)',textAlign: TextAlign.center)]),
                   Column(
                       children:
                       typeDefendingWeaknesses.map((value) {
-                        print("TABLE CELL?? " + value);
+                        // print("TABLE CELL?? " + value);
                         return Text(value,);
                         //Return an empty Container for non-matching case
                       }).toList()),
                 ]),
                 TableRow( children: [
-                  Column(children:[Text('Defending -  Not Effective (0x Damage)')]),
+                  Column(children:[Text('Defending -  Not Effective (0x Damage)',textAlign: TextAlign.center)]),
                   Column(
                       children:
                       typeDefendingNullified.map((value) {
-                        print("TABLE CELL?? " + value);
+                        // print("TABLE CELL?? " + value);
                         return Text(value,);
                         //Return an empty Container for non-matching case
                       }).toList()),

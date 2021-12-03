@@ -190,11 +190,11 @@ class _PokeTeamsState extends State<PokeTeams> {
         children: [
           SizedBox(height: 24),
           Text(
-            'Pokemon Teams: ',
+            'Your Pokemon Teams: ',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
-              color: Colors.red,
+              color: Colors.lightBlue,
             ),
           ),
           SizedBox(height: 24),
@@ -218,50 +218,68 @@ class _PokeTeamsState extends State<PokeTeams> {
       BuildContext context,
       PokemonTeam pokemonTeam,
       ) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      return Column(
         children: [
-          TextButton(
-            child: Text(
-                pokemonTeam.name,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+                left: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+                right: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+                bottom: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              color: Color(0xFFFFFFF),
+              //0xFFBFBFBF
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  child: Text(
+                      pokemonTeam.name,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                      ),
+                    ), onPressed: () {
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PokemonTeamDetailPage(pokemonTeamObject: pokemonTeam),
+                          ),
+                        );
+                },
                 ),
-              ), onPressed: () {
+                // ListTile(
+                //   // tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                //     title: Text(
+                //       pokemonTeam.name,
+                //       maxLines: 2,
+                //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                //     ),
+                //     onTap: (){
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => PokemonTeamDetailPage(pokemonTeamObject: pokemonTeam),
+                //         ),
+                //       );
+                //     }
+                // ),
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PokemonTeamDetailPage(pokemonTeamObject: pokemonTeam),
-                    ),
-                  );
-          },
+                IconButton(
+                  icon: const Icon(Icons.clear),
+                  tooltip: 'Remove from team',
+                  onPressed: () {
+                    deletePokemonTeam(pokemonTeam);
+                  },
+                )
+              ],
+            ),
           ),
-          // ListTile(
-          //   // tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          //     title: Text(
-          //       pokemonTeam.name,
-          //       maxLines: 2,
-          //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          //     ),
-          //     onTap: (){
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //           builder: (context) => PokemonTeamDetailPage(pokemonTeamObject: pokemonTeam),
-          //         ),
-          //       );
-          //     }
-          // ),
-
-          IconButton(
-            icon: const Icon(Icons.clear),
-            tooltip: 'Remove from team',
-            onPressed: () {
-              deletePokemonTeam(pokemonTeam);
-            },
-          )
+          SizedBox(height: 24),
         ],
       );
     // final color = transaction.isExpense ? Colors.red : Colors.green;

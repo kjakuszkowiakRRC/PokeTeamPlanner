@@ -8,14 +8,18 @@ class PokemonTypeRow extends StatelessWidget {
   // });
 
   var pokemonTypeList;
+  bool isPokedexScreen;
   // final String message;
 
-  PokemonTypeRow(this.pokemonTypeList);
+  PokemonTypeRow(
+      this.pokemonTypeList,
+      this.isPokedexScreen
+      );
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      // mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ..._buildTypeRowList(pokemonTypeList),
       ],
@@ -31,6 +35,15 @@ class PokemonTypeRow extends StatelessWidget {
         width: 100,
       );
       abilities.add(abilityWidget);
+      abilities.add(SizedBox(width: 10));
+    }
+    if (typeList.length == 1) {
+      abilities.add(SizedBox(width: 100));
+      abilities.add(SizedBox(width: 10));
+    }
+    // print(isPokedexScreen.toString());
+    if(isPokedexScreen) {
+      abilities.add(Padding(child: Icon(Icons.zoom_in), padding: const EdgeInsets.only(left: 15.0),));
     }
     return abilities;
   }

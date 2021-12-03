@@ -31,6 +31,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   bool isSwitched = false;
   String pokemonURL = "";
   String dropdownValue = 'Pick a team';
+  late PokemonTeam selectedPokemonTeam;
 
   var box = Hive.box<PokemonTeam>('pokemon_teams');
   // late PokemonTeam? selectedPokemonTeam;
@@ -43,8 +44,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
 
   // @override
   // void initState() {
-  //   _loadBoxes();
-  //   selectedPokemonTeam = box.getAt(0);
+  //   precacheImage(NetworkImage(widget.pokemonObject.shinySpriteURL), context);
   //   super.initState();
   // }
 
@@ -55,6 +55,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   @override
   Widget build(BuildContext context) {
     preload(context, widget.pokemonObject.shinySpriteURL);
+    // precacheImage(NetworkImage(widget.pokemonObject.shinySpriteURL), context);
+    // preload(context, widget.pokemonObject.spriteURL);
     return Scaffold(
       appBar: PokeAppBar(),
       body: ValueListenableBuilder<Box<PokemonTeam>>(
@@ -74,133 +76,219 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       List<String> list = [];
       pokemonTeams.forEach((element) => list.add(element.name));
 
-      PokemonTeam selectedPokemonTeam = pokemonTeams.first;
+      // selectedPokemonTeam = ;
       // print(list.first);
       return Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.only(left: 120.0, right: 30.0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.pokemonObject.name.toString().toTitleCase()),
-              Image.network(pokemonURL.isEmpty ? widget.pokemonObject.spriteURL : pokemonURL),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Shiny Model Slider'),
-                  Switch(
-                      value: isSwitched,
-                      onChanged: (value) {
-                        setState(() {
-                          if(!value) {
-                            pokemonURL = widget.pokemonObject.spriteURL;
-                          }
-                          else {
-                            pokemonURL = widget.pokemonObject.shinySpriteURL;
-                          }
-                          isSwitched = value;
-                        });
-                      })
-                ],
+              SizedBox(height: 40),
+              Text(
+                widget.pokemonObject.id.toString().padLeft(3, '0'),
+                style:  TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
-              PokemonTypeRow(widget.pokemonObject.typesImageURL),
-              Text('Height: ${widget.pokemonObject.getHeight()}'),
-              Text('Weight: ${widget.pokemonObject.getWeight()}'),
+              SizedBox(height: 15),
+              Text(
+                widget.pokemonObject.name.toString().toTitleCase(),
+                style:  TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              // SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Image.network(
+                    pokemonURL.isEmpty ? widget.pokemonObject.spriteURL : pokemonURL,
+                  scale: .5,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0),
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Shiny Version'),
+                    Switch(
+                        value: isSwitched,
+                        onChanged: (value) {
+                          setState(() {
+                            if(!value) {
+                              pokemonURL = widget.pokemonObject.spriteURL;
+                            }
+                            else {
+                              pokemonURL = widget.pokemonObject.shinySpriteURL;
+                            }
+                            isSwitched = value;
+                          });
+                        })
+                  ],
+                ),
+              ),
+              PokemonTypeRow(widget.pokemonObject.typesImageURL, false),
+              SizedBox(height: 25),
+              RichText(
+                  text: new TextSpan(
+                    // Note: Styles for TextSpans must be explicitly defined.
+                    // Child text spans will inherit styles from parent
+                      style: new TextStyle(
+                        fontSize: 16.0,
+                      ),
+                  children: <TextSpan>[
+                    new TextSpan(text: 'Height: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                    new TextSpan(text: widget.pokemonObject.getHeight())
+                  ]
+                  ,
+                  )
+              ),
+              SizedBox(height: 5),
+              RichText(
+                  text: new TextSpan(
+                    // Note: Styles for TextSpans must be explicitly defined.
+                    // Child text spans will inherit styles from parent
+                    style: new TextStyle(
+                      fontSize: 16.0,
+                    ),
+                    children: <TextSpan>[
+                      new TextSpan(text: 'Weight: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                      new TextSpan(text: widget.pokemonObject.getWeight())
+                    ]
+                    ,
+                  )
+              ),
+              SizedBox(height: 5),
               // PokemonTypeRow(widget.pokemonObject.typesImageURL),
               _buildAbilityRow(context, widget.pokemonObject.abilities),
               // Text('Types: ${widget.pokemonObject.getListContents(widget.pokemonObject.types)}'),
               // _buildTypeRow(context, widget.pokemonObject.typesImageURL),
-              Text('Description: ${widget.pokemonObject.getPokedexEntry()}'),
-
-              if (widget.isFromPokedex && pokemonTeams.isNotEmpty) Row(
-                children: [
-                  DropdownButton<PokemonTeam>(
-                    value: selectedPokemonTeam,
-                    iconSize: 24,
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
+              RichText(
+                  text: new TextSpan(
+                    // Note: Styles for TextSpans must be explicitly defined.
+                    // Child text spans will inherit styles from parent
+                    style: new TextStyle(
+                      fontSize: 16.0,
                     ),
-                    onChanged: (PokemonTeam? newValue) {
-                      setState(() {
-                        selectedPokemonTeam = newValue!;
-                        print("onchanged: "+selectedPokemonTeam.key.toString());
-                      });
-                    },
-                    // items: pokemonT
-                    items: pokemonTeams
-                        .map((PokemonTeam pokemonTeam) {
-                      return DropdownMenuItem<PokemonTeam>(
-                        value: pokemonTeam,
-                        child: Text(pokemonTeam.name),
-                      );
-                    }).toList(),
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        if (selectedPokemonTeam.pokemonTeam.length < 6) {
-                          selectedPokemonTeam.pokemonTeam.add(widget.pokemonObject);
-                          selectedPokemonTeam.pokemonTeam.elementAt(0);
-                          // if (selectedPokemonTeam.pokemonTeamTypes.isEmpty) {
-                            for(var type in widget.pokemonObject.types) {
-                              print("NONE");
-                              selectedPokemonTeam.pokemonTeamTypes.add(type.name);
-                            }
-                          // }
-                          // else {
-                          //   List tempList = [];
-                          //   for(var typeTop in widget.pokemonObject.types) {
-                          //     // var contain = listOfDownloadedFile.where((element) => element.Url == "your URL link")
-                          //     // print("FIRST LEVEL: "+typeTop.name);
-                          //     // // for(var type in widget.pokemonObject.types) {
-                          //     //   print("SECOND LEVEL: "+type.name);
-                          //       if(!selectedPokemonTeam.pokemonTeamTypes.contains(typeTop.name)) {
-                          //         // print("DEEP INSIDE " + typeTop.name);
-                          //         tempList.add(typeTop.name);
-                          //       }
-                          //     // }
-                          //
-                          //   }
-                          //   selectedPokemonTeam.pokemonTeamTypes.addAll(tempList);
-                          //   tempList = [];
-                          // }
-                          // for(var typeTop in selectedPokemonTeam.pokemonTeamTypes) {
-                          //
-                          //   for(var type in widget.pokemonObject.types) {
-                          //     if(!typeTop.name.toString().contains(type.name.toString())) {
-                          //       print("inside");
-                          //       selectedPokemonTeam.pokemonTeamTypes.add(type.name);
-                          //     }
-                          //   }
-                          //
-                          // }
-                          // for(var type in widget.pokemonObject.types) {
-                          //   print('Type: ${type.name} inside? ${selectedPokemonTeam.pokemonTeamTypes.contains(type)}');
-                          //   if (!selectedPokemonTeam.pokemonTeamTypes.contains(type.name.toString())) {
-                          //     print("inside");
-                          //     selectedPokemonTeam.pokemonTeamTypes.add(type);
-                          //   }
-                          // }
-                          final snackBar = SnackBar(content: Text('Added: ${widget.pokemonObject.name.toString().toTitleCase()} to ${selectedPokemonTeam.name}'));
+                    children: <TextSpan>[
+                      new TextSpan(text: 'Description: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                    ]
+                    ,
+                  )
+              ),
+              Padding(
+                padding:  const EdgeInsets.only(right: 55.0),
+                child:
+                  Text('${widget.pokemonObject.getPokedexEntry()}'),
 
-                          // Find the ScaffoldMessenger in the widget tree
-                          // and use it to show a SnackBar.
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                        else {
-                          final snackBar = SnackBar(content: Text('You have reached the maximum number of pokemon in ${selectedPokemonTeam.name}. Remove one before adding another.'));
+              ),
+              SizedBox(height: 25),
 
-                          // Find the ScaffoldMessenger in the widget tree
-                          // and use it to show a SnackBar.
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
+              if (widget.isFromPokedex && pokemonTeams.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(left: 0, right: 35),
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    DropdownButtonFormField<PokemonTeam>(
+                      // value: selectedPokemonTeam,
+                      hint: Text("Pick a team"),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.deepPurple),
+                      // underline: Container(
+                      //   height: 2,
+                      //   color: Colors.deepPurpleAccent,
+                      // ),
+                      onChanged: (PokemonTeam? newValue) {
+                        setState(() {
+                          selectedPokemonTeam = newValue!;
 
+                          // print("onchanged: "+selectedPokemonTeam.name);
+                        });
                       },
-                      child: Text("Add to team"))
-                ],
-              )
+                      // items: pokemonT
+                      items: pokemonTeams
+                          .map((PokemonTeam pokemonTeam) {
+                        return DropdownMenuItem<PokemonTeam>(
+                          value: pokemonTeam,
+                          child: Text(pokemonTeam.name),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 5),
+                    ElevatedButton(
+                        onPressed: () {
+                          print("ONPRESS: "+selectedPokemonTeam.name);
+                          if (selectedPokemonTeam.pokemonTeam.length < 6) {
+                            selectedPokemonTeam.pokemonTeam.add(widget.pokemonObject);
+                            selectedPokemonTeam.pokemonTeam.elementAt(0);
+                            // if (selectedPokemonTeam.pokemonTeamTypes.isEmpty) {
+                              for(var type in widget.pokemonObject.types) {
+                                print("NONE");
+                                selectedPokemonTeam.pokemonTeamTypes.add(type.name);
+                              }
+                            // }
+                            // else {
+                            //   List tempList = [];
+                            //   for(var typeTop in widget.pokemonObject.types) {
+                            //     // var contain = listOfDownloadedFile.where((element) => element.Url == "your URL link")
+                            //     // print("FIRST LEVEL: "+typeTop.name);
+                            //     // // for(var type in widget.pokemonObject.types) {
+                            //     //   print("SECOND LEVEL: "+type.name);
+                            //       if(!selectedPokemonTeam.pokemonTeamTypes.contains(typeTop.name)) {
+                            //         // print("DEEP INSIDE " + typeTop.name);
+                            //         tempList.add(typeTop.name);
+                            //       }
+                            //     // }
+                            //
+                            //   }
+                            //   selectedPokemonTeam.pokemonTeamTypes.addAll(tempList);
+                            //   tempList = [];
+                            // }
+                            // for(var typeTop in selectedPokemonTeam.pokemonTeamTypes) {
+                            //
+                            //   for(var type in widget.pokemonObject.types) {
+                            //     if(!typeTop.name.toString().contains(type.name.toString())) {
+                            //       print("inside");
+                            //       selectedPokemonTeam.pokemonTeamTypes.add(type.name);
+                            //     }
+                            //   }
+                            //
+                            // }
+                            // for(var type in widget.pokemonObject.types) {
+                            //   print('Type: ${type.name} inside? ${selectedPokemonTeam.pokemonTeamTypes.contains(type)}');
+                            //   if (!selectedPokemonTeam.pokemonTeamTypes.contains(type.name.toString())) {
+                            //     print("inside");
+                            //     selectedPokemonTeam.pokemonTeamTypes.add(type);
+                            //   }
+                            // }
+                            final snackBar = SnackBar(content: Text('Added: ${widget.pokemonObject.name.toString().toTitleCase()} to ${selectedPokemonTeam.name}'));
+
+                            // Find the ScaffoldMessenger in the widget tree
+                            // and use it to show a SnackBar.
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+                          else {
+                            final snackBar = SnackBar(content: Text('You have reached the maximum number of pokemon in ${selectedPokemonTeam.name}. Remove one before adding another.'));
+
+                            // Find the ScaffoldMessenger in the widget tree
+                            // and use it to show a SnackBar.
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+
+                        },
+                        child: Text("Add to team")),
+                    // Text("data")
+                  ],
+              ),
+                )
             ],
           ),
         ),
@@ -212,10 +300,24 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
         padding: const EdgeInsets.all(30.0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(widget.pokemonObject.name.toString().toTitleCase()),
-              Image.network(pokemonURL.isEmpty ? widget.pokemonObject.spriteURL : pokemonURL),
+              Text(
+                  widget.pokemonObject.name.toString().toTitleCase(),
+                style:  TextStyle(
+                  // color: Colors.lightBlue,
+                  fontSize: 100,
+                ),
+              ),
+              SizedBox(height: 500),
+              Container(
+                alignment: Alignment.center,
+                child: Image.network(
+                    pokemonURL.isEmpty ? widget.pokemonObject.spriteURL : pokemonURL,
+                    height: 150,
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -235,7 +337,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                       })
                 ],
               ),
-              PokemonTypeRow(widget.pokemonObject.typesImageURL),
+              PokemonTypeRow(widget.pokemonObject.typesImageURL, false),
               Text('Height: ${widget.pokemonObject.getHeight()}'),
               Text('Weight: ${widget.pokemonObject.getWeight()}'),
               // PokemonTypeRow(widget.pokemonObject.typesImageURL),
@@ -253,9 +355,18 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
 
   Widget _buildAbilityRow(BuildContext context, List<Ability> abilities) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      // mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Abilities:"),
+        RichText(
+            text: new TextSpan(
+              style: new TextStyle(
+                fontSize: 16.0,
+              ),
+              children: <TextSpan>[
+                new TextSpan(text: 'Abilities: ', style: new TextStyle(fontWeight: FontWeight.bold))
+              ],
+            )
+        ),
         ..._buildAbilityRowList(abilities),
     ],
     );
@@ -272,7 +383,10 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
           );
         },
         child: Text(
-          ability.name.toTitleCase()
+          ability.name.toTitleCase(),
+          style: new TextStyle(
+            fontSize: 16.0,
+          ),
         )
       );
       abilities.add(abilityWidget);

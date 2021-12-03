@@ -341,7 +341,7 @@ class _PokedexOldState extends State<PokedexOld> {
                 ),
                 Row(
                   children: [
-                    PokemonTypeRow(pokemon.typesImageURL)
+                    PokemonTypeRow(pokemon.typesImageURL, true)
                   ],
                 )
               ],

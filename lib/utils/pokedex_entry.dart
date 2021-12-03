@@ -20,50 +20,67 @@ class PokedexEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PokemonDetailPage(pokemonObject: pokemon, isFromPokedex: isFromPokedexPage,),
-            ),
-          );
-        },
-        child: Row(
-          children: [
-            // stopping this so i dont get blocked
-            // Image.network(pokemon.spriteURL),
-            Column(
+    return Container(
+      decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+            left: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+            right: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+            bottom: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+          ),
+          color: Color(0xFFFFFFF),
+        //0xFFBFBFBF
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 35.0),
+        child: GestureDetector(
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PokemonDetailPage(pokemonObject: pokemon, isFromPokedex: isFromPokedexPage,),
+                ),
+              );
+            },
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
+                // stopping this so i dont get blocked
+                Image.network(pokemon.spriteURL),
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${pokemon.id}. ${pokemon.name.toTitleCase()}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
+                    Row(
+                      children: [
+                        Text("${pokemon.id}. ${pokemon.name.toTitleCase()}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                            )
                         )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        PokemonTypeRow(pokemon.typesImageURL, isFromPokedexPage)
+                      ],
                     )
                   ],
                 ),
-                Row(
-                  children: [
-                    PokemonTypeRow(pokemon.typesImageURL)
-                  ],
-                )
+                // if (!isFromPokedexPage) IconButton(
+                //   icon: const Icon(Icons.clear),
+                //   tooltip: 'Remove from team',
+                //   onPressed: () {
+                //     // setState(() {
+                //     //
+                //     // });
+                //   },
+                // ),
+                // Text('Volume : $_volume')
               ],
-            ),
-            // if (!isFromPokedexPage) IconButton(
-            //   icon: const Icon(Icons.clear),
-            //   tooltip: 'Remove from team',
-            //   onPressed: () {
-            //     // setState(() {
-            //     //
-            //     // });
-            //   },
-            // ),
-            // Text('Volume : $_volume')
-          ],
-        )
+            )
+        ),
+      ),
     );
   }
 }
