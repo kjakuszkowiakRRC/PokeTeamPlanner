@@ -80,7 +80,7 @@ class Menu extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Image(
-                        image: AssetImage('assets/images/pokeball.png'),
+                        image: AssetImage('assets/images/pokeball2.png'),
                         width: 75,
                       ), // icon
                       Text(
@@ -113,7 +113,7 @@ class Menu extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Image(
-                        image: AssetImage('assets/images/poke_team.png'),
+                        image: AssetImage('assets/images/poke_team_2.png'),
                         width: 75,
                       ), // icon
                       Text(
@@ -148,7 +148,7 @@ class Menu extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Image(
-                        image: AssetImage('assets/images/account.png'),
+                        image: AssetImage('assets/images/account4.png'),
                         width: 75,
                       ), // icon
                       Text(
@@ -182,7 +182,7 @@ class Menu extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Image(
-                        image: AssetImage('assets/images/settings.png'),
+                        image: AssetImage('assets/images/settings2.png'),
                         width: 75,
                       ), // icon
                       Text(
